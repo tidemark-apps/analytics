@@ -145,6 +145,7 @@ def write(path, content):
 
 # ---- lockups --------------------------------------------------------------------------------------------------
 PAD = 0.04
+MARK_SHARE = 0.8   # mark height relative to the two-line text block, centered on it
 LOCKUP = 0.72   # first-line size relative to the old one-line wordmark, so the two-line lockup stays compact
 
 
@@ -154,9 +155,10 @@ def horizontal_parts(size, color, gap_em=0.34):
     d, w, box, base2 = wordmark(size)
     asc = ASC * size
     h = asc + base2
-    k = h / MARK_H
+    mh = h * MARK_SHARE
+    k = mh / MARK_H
     gap = gap_em * size
-    mark = mark_glyph(color, f'translate({-MARK_X0 * k:.3f} {h - BOTTOM * k:.3f}) scale({k:.4f})')
+    mark = mark_glyph(color, f'translate({-MARK_X0 * k:.3f} {(h - mh) / 2 + mh - BOTTOM * k:.3f}) scale({k:.4f})')
     text = f'<g transform="translate({MARK_W * k + gap:.3f} {asc:.3f})"><path d="{d}" fill="{color}"/></g>'
     return mark + text, MARK_W * k + gap + (box[2] - box[0]), h
 
