@@ -4,6 +4,12 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+## [0.38.1] - 2026-11-09
+
+### Changed
+- The product is now called Tidemark Analytics, and the logo shows "tidemark" with ANALYTICS beneath it. The name and logo are updated on the sign-in and installer pages, in emails, in the API description and in the project README. Your install, settings and data are unchanged.
+- The code now lives at github.com/tidemark-apps/analytics, and the Docker image is `ghcr.io/tidemark-apps/analytics`. The old repository address redirects, so existing installs keep updating, and the image is also still published as `ghcr.io/tidemark-apps/tidemark`.
+
 ## [0.38.0] - 2026-11-04
 
 ### Added
