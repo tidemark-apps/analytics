@@ -93,6 +93,9 @@ jobs:
             ghcr.io/${{ github.repository }}:${{ steps.t.outputs.version }}
             ghcr.io/${{ github.repository }}:${{ steps.t.outputs.minor }}
             ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository_owner }}/tidemark:${{ steps.t.outputs.version }}
+            ghcr.io/${{ github.repository_owner }}/tidemark:${{ steps.t.outputs.minor }}
+            ghcr.io/${{ github.repository_owner }}/tidemark:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.description=Privacy-first web analytics
