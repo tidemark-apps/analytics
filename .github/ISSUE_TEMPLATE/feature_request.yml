@@ -4,7 +4,7 @@ labels: [enhancement]
 body:
   - type: markdown
     attributes:
-      value: Tidemark deliberately stays small. Please explain the problem before the solution.
+      value: Tidemark Analytics deliberately stays small. Please explain the problem before the solution.
   - type: textarea
     id: problem
     attributes:

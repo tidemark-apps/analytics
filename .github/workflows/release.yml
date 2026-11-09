@@ -61,7 +61,7 @@ jobs:
           V="${{ steps.v.outputs.version }}"
           NOTES="$(awk -v v="$V" '$0 ~ "^## \\["v"\\]" {f=1; next} /^## \[/ {f=0} f' CHANGELOG.md)"
           [ -n "$NOTES" ] || NOTES="Release $V"
-          gh release create "${GITHUB_REF_NAME}" dist/* --title "Tidemark $V" --notes "$NOTES"
+          gh release create "${GITHUB_REF_NAME}" dist/* --title "Tidemark Analytics $V" --notes "$NOTES"
 
   docker:
     name: Docker image
@@ -93,6 +93,9 @@ jobs:
             ghcr.io/${{ github.repository }}:${{ steps.t.outputs.version }}
             ghcr.io/${{ github.repository }}:${{ steps.t.outputs.minor }}
             ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository_owner }}/tidemark:${{ steps.t.outputs.version }}
+            ghcr.io/${{ github.repository_owner }}/tidemark:${{ steps.t.outputs.minor }}
+            ghcr.io/${{ github.repository_owner }}/tidemark:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.description=Privacy-first web analytics

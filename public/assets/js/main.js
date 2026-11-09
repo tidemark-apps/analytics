@@ -47,7 +47,7 @@ function PublicBar({ shared }) {
   const custom = brand && (brand.logo || brand.name);
   return html`<header class="topbar"><div class="topbar-in">
     ${custom ? html`<span class="brand custom">${brand.logo && html`<img class="brand-logo" src=${brand.logo} alt=${brand.name || ''} />`}${brand.name && !(brand.hide_name && brand.logo) && html`<span class="brand-name">${brand.name}</span>`}</span>`
-      : html`<${Link} to="/login" class="brand" aria-label="Tidemark home"><${Lockup} size=${24} /><//>`}
+      : html`<${Link} to="/login" class="brand" aria-label="Tidemark Analytics home"><${Lockup} size=${24} /><//>`}
     ${shared && html`<span class="badge outline">Shared view</span>`}
     <span class="grow"></span>
     <button class="btn ghost icon" onClick=${toggleTheme} aria-label="Toggle light and dark theme" title="Toggle theme"><${Icon} name="sun" size=${16} class="theme-sun" /><${Icon} name="moon" size=${16} class="theme-moon" /></button>

@@ -1,11 +1,11 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="public/assets/logo/tidemark-horizontal-dark.svg">
-    <img src="public/assets/logo/tidemark-horizontal.svg" alt="Tidemark" width="260">
+    <img src="public/assets/logo/tidemark-horizontal.svg" alt="Tidemark Analytics" width="260">
   </picture>
 </p>
 
-[![CI](https://github.com/tidemark-analytics/tidemark/actions/workflows/ci.yml/badge.svg)](https://github.com/tidemark-analytics/tidemark/actions/workflows/ci.yml) [![Latest release](https://img.shields.io/github/v/release/tidemark-analytics/tidemark)](https://github.com/tidemark-analytics/tidemark/releases/latest) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Community](https://img.shields.io/badge/community-forum-0e7c86)](https://community.tidemarkanalytics.com)
+[![CI](https://github.com/tidemark-apps/analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/tidemark-apps/analytics/actions/workflows/ci.yml) [![Latest release](https://img.shields.io/github/v/release/tidemark-apps/analytics)](https://github.com/tidemark-apps/analytics/releases/latest) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Community](https://img.shields.io/badge/community-forum-0e7c86)](https://community.tidemarkanalytics.com)
 
 <a href="https://www.opensourcealternatives.to"><img src="https://www.opensourcealternatives.to/badge-osa.svg" alt="As seen on Open Source Alternatives"></a>
 <a href="https://alternativeto.net/software/tidemark-analytics/about/?utm_source=badge&utm_medium=referral" target="_blank"><img src="https://alternativeto.net/static/badges/badge-wide-color.svg" alt="Tidemark Analytics | AlternativeTo" width="284" height="51"></a>
@@ -13,11 +13,11 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset=".github/assets/dashboard-dark.png">
-    <img src=".github/assets/dashboard-light.png" alt="The Tidemark dashboard: a summary, KPI tiles, a graph and reports for traffic, audience and conversions" width="900">
+    <img src=".github/assets/dashboard-light.png" alt="The Tidemark Analytics dashboard: a summary, KPI tiles, a graph and reports for traffic, audience and conversions" width="900">
   </picture>
 </p>
 
-Simple, privacy-first web analytics that runs on **ordinary PHP shared hosting**. One light dashboard in the spirit of
+**Tidemark Analytics** is simple, privacy-first web analytics that runs on **ordinary PHP shared hosting**. One light dashboard in the spirit of
 [Plausible](https://plausible.io), built with Laravel — upload a zip, open `/install`, done. No Node, no Docker, no SSH required.
 
 - Cookie-free, no personal data: visitor ids are a salted hash that rotates every day, and IP addresses are never written to the database
@@ -29,7 +29,7 @@ Simple, privacy-first web analytics that runs on **ordinary PHP shared hosting**
 
 ## Don't want to run it yourself? Tidemark Cloud
 
-The same open-source Tidemark, hosted for you at [tidemarkanalytics.com](https://www.tidemarkanalytics.com): no server, no updates, nothing to install. Sign up, paste one line into your site's `<head>`, and your dashboard is ready.
+The same open-source Tidemark Analytics, hosted for you at [tidemarkanalytics.com](https://www.tidemarkanalytics.com): no server, no updates, nothing to install. Sign up, paste one line into your site's `<head>`, and your dashboard is ready.
 
 - **Free to start:** 1 site, 10,000 events a month and 6 months of history, with every report, filter, goal and shared link.
 - **Pro, $7 a month ($70 a year):** unlimited sites, 250,000 events a month, 5 years of history, funnels, revenue, segments, journeys, rollups, alerts and webhooks, and your own logo and color on public dashboards. Need more events? Add packs of 250,000 for $5 whenever you like.
@@ -42,7 +42,7 @@ Prefer to host it yourself? Everything below is for you, and it is free under th
 
 ## Install on shared hosting (no SSH)
 
-1. Download the latest `tidemark-x.y.z.zip` from [Releases](https://github.com/tidemark-analytics/tidemark/releases/latest) (dependencies are bundled), or build it yourself: `scripts/build-release.sh 0.8.0` → `dist/tidemark-0.8.0.zip`.
+1. Download the latest `tidemark-x.y.z.zip` from [Releases](https://github.com/tidemark-apps/analytics/releases/latest) (dependencies are bundled), or build it yourself: `scripts/build-release.sh 0.8.0` → `dist/tidemark-0.8.0.zip`.
 2. Upload and unzip it on your host. **Point the domain's document root at the `public/` folder.**
    If your host won't let you, upload to the web root as-is — the bundled root `.htaccess` forwards to `public/` and blocks internals.
 3. Visit `https://your-domain/install`: the page checks the server, connects your database (SQLite needs no setup), runs the migrations and creates your admin account.
@@ -57,7 +57,7 @@ Requirements: PHP 8.3+, `mbstring`, `openssl`, `pdo` + one of `pdo_sqlite` / `pd
 
 ## Install with Docker
 
-A pre-built image for amd64 and arm64 is published to `ghcr.io/tidemark-analytics/tidemark`. With the [`docker-compose.yml`](docker-compose.yml) in this repository:
+A pre-built image for amd64 and arm64 is published to `ghcr.io/tidemark-apps/analytics`. With the [`docker-compose.yml`](docker-compose.yml) in this repository:
 
 ```bash
 docker compose up -d
@@ -208,7 +208,7 @@ MIT
 
 ## Community
 
-Questions, ideas and show-and-tell: join the [Tidemark community](https://community.tidemarkanalytics.com). Bugs belong in [GitHub issues](https://github.com/tidemark-analytics/tidemark/issues).
+Questions, ideas and show-and-tell: join the [Tidemark community](https://community.tidemarkanalytics.com). Bugs belong in [GitHub issues](https://github.com/tidemark-apps/analytics/issues).
 
 ## Contributing
 
