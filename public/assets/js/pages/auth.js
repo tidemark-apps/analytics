@@ -7,7 +7,7 @@ import { passkeysSupported, usePasskey } from '../webauthn.js';
 
 function AuthShell({ title, sub, children }) {
   return html`<div class="auth-body"><div class="auth-card">
-    <div class="brand big"><${Lockup} size=${30} /></div>
+    <div class="brand big"><${Lockup} size=${36} /></div>
     <div><h1>${title}</h1><p class="auth-sub">${sub}</p></div>${children}</div><${LegalLinks} /></div>`;
 }
 
