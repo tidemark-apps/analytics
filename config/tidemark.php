@@ -24,7 +24,7 @@ return [
 
     'update_check' => (bool) env('TIDEMARK_UPDATE_CHECK', true),
 
-    'update_repo' => env('TIDEMARK_UPDATE_REPO', 'tidemark-analytics/tidemark'),
+    'update_repo' => env('TIDEMARK_UPDATE_REPO', 'tidemark-apps/analytics'),
 
     // Installed release, stamped into the VERSION file by scripts/build-release.sh.
     'version' => is_file(base_path('VERSION')) ? trim((string) file_get_contents(base_path('VERSION'))) : 'dev',
