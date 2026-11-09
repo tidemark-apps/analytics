@@ -330,7 +330,7 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 ## [0.14.0] - 2026-10-22
 
 ### Added
-- A Docker image, `ghcr.io/tidemark-analytics/tidemark`, for amd64 and arm64. It runs the app and its scheduler in one container, keeps everything that changes in a single `/data` volume, and works with SQLite, MySQL, MariaDB or PostgreSQL. A `docker-compose.yml` is included. Updating means pulling a newer image; the in-app updater is switched off inside the container.
+- A Docker image, `ghcr.io/tidemark-apps/analytics`, for amd64 and arm64. It runs the app and its scheduler in one container, keeps everything that changes in a single `/data` volume, and works with SQLite, MySQL, MariaDB or PostgreSQL. A `docker-compose.yml` is included. Updating means pulling a newer image; the in-app updater is switched off inside the container.
 
 ## [0.13.1] - 2026-10-22
 

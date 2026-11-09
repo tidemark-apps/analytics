@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: Question or idea
-    url: https://github.com/tidemark-analytics/tidemark/discussions
+    url: https://github.com/tidemark-apps/analytics/discussions
     about: Ask questions and share ideas in Discussions.
   - name: Community chat
     url: https://community.tidemarkanalytics.com
     about: Talk with other Tidemark users on the community forum.
   - name: Security vulnerability
-    url: https://github.com/tidemark-analytics/tidemark/security/advisories/new
+    url: https://github.com/tidemark-apps/analytics/security/advisories/new
     about: Report security problems privately, not as a public issue.

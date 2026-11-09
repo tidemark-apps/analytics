@@ -2,7 +2,7 @@
 # then open http://localhost:8080/install to create your admin account.
 services:
   tidemark:
-    image: ghcr.io/tidemark-analytics/tidemark:latest
+    image: ghcr.io/tidemark-apps/analytics:latest
     restart: unless-stopped
     ports:
       - "8080:8080"
