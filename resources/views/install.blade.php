@@ -17,7 +17,7 @@
 <body class="auth-body">
 <a class="skip" href="#main">Skip to the form</a>
 <main class="auth-card wide" id="main" tabindex="-1">
-    <picture><source srcset="{{ asset('assets/logo/tidemark-horizontal-dark.svg') }}" media="(prefers-color-scheme: dark)"><img src="{{ asset('assets/logo/tidemark-horizontal.svg') }}" alt="Tidemark" height="38" style="height:38px;width:auto"></picture>
+    <picture><source srcset="{{ asset('assets/logo/tidemark-horizontal-dark.svg') }}" media="(prefers-color-scheme: dark)"><img src="{{ asset('assets/logo/tidemark-horizontal.svg') }}" alt="Tidemark Analytics" height="38" style="height:38px;width:auto"></picture>
     <div>
         <h1>Let's get you set up</h1>
         <p class="auth-sub">Two minutes: check the server, connect a database, create your admin account.</p>

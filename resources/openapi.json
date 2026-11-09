@@ -1,12 +1,12 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Tidemark API",
+    "title": "Tidemark Analytics API",
     "version": "dev",
-    "summary": "Stats, Events and MCP endpoints of a Tidemark installation.",
+    "summary": "Stats, Events and MCP endpoints of a Tidemark Analytics installation.",
     "description": "Read your analytics with the **Stats API**, which follows Plausible's Stats API v1 and adds goals, funnels and annotations; send events with the **Events API**; or let an AI assistant read the same numbers through the **MCP** endpoint.\n\nAuthenticate with an API key created in Account settings → Security, sent as `Authorization: Bearer <key>`. A **read-only** key can use the Stats API and MCP, which only read; it cannot change anything. All numbers are aggregates, never visitor-level data.",
     "contact": {
-      "name": "Tidemark",
+      "name": "Tidemark Analytics",
       "url": "https://tidemarkanalytics.com"
     },
     "license": {

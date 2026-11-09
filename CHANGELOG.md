@@ -4,6 +4,9 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+### Changed
+- The product is now called Tidemark Analytics, and the logo reads "tidemark analytics". The name and logo are updated on the sign-in and installer pages, in emails, in the API description and in the project README. Your install, settings and data are unchanged.
+
 ### Fixed
 - Site settings → Data → Delete by filter: the confirmation window now closes after the visits are deleted, instead of staying open and ignoring the close button.
 
