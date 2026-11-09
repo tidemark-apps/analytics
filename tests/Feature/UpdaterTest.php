@@ -153,13 +153,13 @@ class UpdaterTest extends TestCase
     }
 
     /** @return array{0:string,1:string} the zip's bytes and its sha256 */
-    private function fakeGithub(string $version, ?string $sha = null, string $assetUrl = 'https://github.com/tidemark-analytics/tidemark/releases/download/v%s/tidemark-%s.zip'): array
+    private function fakeGithub(string $version, ?string $sha = null, string $assetUrl = 'https://github.com/tidemark-apps/analytics/releases/download/v%s/tidemark-%s.zip'): array
     {
         $bytes = file_get_contents($this->release($version));
         $sha ??= hash('sha256', $bytes);
         $zipUrl = sprintf($assetUrl, $version, $version);
         Http::fake([
-            'github.com/tidemark-analytics/tidemark/releases/latest' => Http::response('', 302, ['Location' => "https://github.com/tidemark-analytics/tidemark/releases/tag/v{$version}"]),
+            'github.com/tidemark-apps/analytics/releases/latest' => Http::response('', 302, ['Location' => "https://github.com/tidemark-apps/analytics/releases/tag/v{$version}"]),
             'api.github.com/*' => Http::response(['tag_name' => 'v'.$version, 'body' => 'Notes', 'html_url' => 'https://github.com/x/y/releases/tag/v'.$version, 'published_at' => '2026-10-20T00:00:00Z', 'assets' => [
                 ['name' => "tidemark-{$version}.zip", 'browser_download_url' => $zipUrl, 'size' => strlen($bytes)],
                 ['name' => "tidemark-{$version}.zip.sha256", 'browser_download_url' => $zipUrl.'.sha256', 'size' => 85],
@@ -302,12 +302,12 @@ class UpdaterTest extends TestCase
     public function test_the_version_is_found_even_when_the_rate_limited_api_refuses(): void
     {
         Http::fake([
-            'github.com/tidemark-analytics/tidemark/releases/latest' => Http::response('', 302, ['Location' => 'https://github.com/tidemark-analytics/tidemark/releases/tag/v2.0.0']),
+            'github.com/tidemark-apps/analytics/releases/latest' => Http::response('', 302, ['Location' => 'https://github.com/tidemark-apps/analytics/releases/tag/v2.0.0']),
             'api.github.com/*' => Http::response(['message' => 'API rate limit exceeded'], 403),
         ]);
         $latest = (new Updater($this->base))->latest(true);
         $this->assertSame(['2.0.0', true, ''], [$latest['version'], $latest['newer'], $latest['notes']]);
-        $this->assertSame('https://github.com/tidemark-analytics/tidemark/releases/download/v2.0.0/tidemark-2.0.0.zip', $latest['zip_url']);
+        $this->assertSame('https://github.com/tidemark-apps/analytics/releases/download/v2.0.0/tidemark-2.0.0.zip', $latest['zip_url']);
         $this->assertSame($latest['zip_url'].'.sha256', $latest['sha_url']);
     }
 
