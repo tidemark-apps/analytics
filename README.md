@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="public/assets/logo/tidemark-horizontal-dark.svg">
-    <img src="public/assets/logo/tidemark-horizontal.svg" alt="Tidemark" width="260">
+    <img src="public/assets/logo/tidemark-horizontal.svg" alt="Tidemark Analytics" width="260">
   </picture>
 </p>
 
@@ -13,11 +13,11 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset=".github/assets/dashboard-dark.png">
-    <img src=".github/assets/dashboard-light.png" alt="The Tidemark dashboard: a summary, KPI tiles, a graph and reports for traffic, audience and conversions" width="900">
+    <img src=".github/assets/dashboard-light.png" alt="The Tidemark Analytics dashboard: a summary, KPI tiles, a graph and reports for traffic, audience and conversions" width="900">
   </picture>
 </p>
 
-Simple, privacy-first web analytics that runs on **ordinary PHP shared hosting**. One light dashboard in the spirit of
+**Tidemark Analytics** is simple, privacy-first web analytics that runs on **ordinary PHP shared hosting**. One light dashboard in the spirit of
 [Plausible](https://plausible.io), built with Laravel — upload a zip, open `/install`, done. No Node, no Docker, no SSH required.
 
 - Cookie-free, no personal data: visitor ids are a salted hash that rotates every day, and IP addresses are never written to the database
@@ -29,7 +29,7 @@ Simple, privacy-first web analytics that runs on **ordinary PHP shared hosting**
 
 ## Don't want to run it yourself? Tidemark Cloud
 
-The same open-source Tidemark, hosted for you at [tidemarkanalytics.com](https://www.tidemarkanalytics.com): no server, no updates, nothing to install. Sign up, paste one line into your site's `<head>`, and your dashboard is ready.
+The same open-source Tidemark Analytics, hosted for you at [tidemarkanalytics.com](https://www.tidemarkanalytics.com): no server, no updates, nothing to install. Sign up, paste one line into your site's `<head>`, and your dashboard is ready.
 
 - **Free to start:** 1 site, 10,000 events a month and 6 months of history, with every report, filter, goal and shared link.
 - **Pro, $7 a month ($70 a year):** unlimited sites, 250,000 events a month, 5 years of history, funnels, revenue, segments, journeys, rollups, alerts and webhooks, and your own logo and color on public dashboards. Need more events? Add packs of 250,000 for $5 whenever you like.

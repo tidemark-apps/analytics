@@ -203,7 +203,7 @@ export function AppBar({ user, path, sites, side }) {
   }, [current && current.id, current && current.organization_id, user.organizations]);
   return html`<header class="topbar"><div class="topbar-in">
     <button class="btn ghost icon side-toggle" aria-label="Open navigation" aria-expanded=${side.open} aria-controls="app-side" onClick=${() => side.setOpen(!side.open)}><${Icon} name="menu" size=${18} /></button>
-    <${Link} to="/sites" class="brand-mark" aria-label="Tidemark, all sites"><${Logo} size=${24} /><//>
+    <${Link} to="/sites" class="brand-mark" aria-label="Tidemark Analytics, all sites"><${Logo} size=${24} /><//>
     <nav class=${'crumbs' + (domain ? ' on-site' : '')} aria-label="Breadcrumb">
       <span class="crumb-sep" aria-hidden="true">/</span>
       <${OrgSwitcher} user=${user} /><span class="crumb-sep" aria-hidden="true">/</span>

@@ -61,7 +61,7 @@ jobs:
           V="${{ steps.v.outputs.version }}"
           NOTES="$(awk -v v="$V" '$0 ~ "^## \\["v"\\]" {f=1; next} /^## \[/ {f=0} f' CHANGELOG.md)"
           [ -n "$NOTES" ] || NOTES="Release $V"
-          gh release create "${GITHUB_REF_NAME}" dist/* --title "Tidemark $V" --notes "$NOTES"
+          gh release create "${GITHUB_REF_NAME}" dist/* --title "Tidemark Analytics $V" --notes "$NOTES"
 
   docker:
     name: Docker image
