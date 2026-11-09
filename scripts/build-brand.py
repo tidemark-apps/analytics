@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates the Tidemark logo set: a single-color pictorial mark + Inter wordmark ("tidemark analytics").
+"""Generates the Tidemark logo set: a single-color pictorial mark + Inter wordmark ("tidemark" over "ANALYTICS").
 
     python3 -m venv .venv && .venv/bin/pip install fonttools brotli
     .venv/bin/python scripts/build-brand.py
@@ -23,7 +23,7 @@ from fontTools.varLib import instancer
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 FONT = os.path.join(ROOT, 'public/assets/fonts/inter-latin.woff2')
 NAME = 'tidemark'
-SECOND = 'analytics'   # product name, set after the brand name in a lighter weight
+SECOND = 'ANALYTICS'   # product name, set under the brand name in spaced capitals; swap it for another product
 
 # ---- palette (keep in sync with public/assets/app.css and resources/brand/index.html) -----------------------
 ABYSS, TRENCH, TIDE = '#07161B', '#0E3A47', '#0E7C86'
@@ -80,9 +80,9 @@ def mark_tile(tile=TRENCH, color=FOAM, radius=11):
 # ---- wordmark from Inter outlines ---------------------------------------------------------------------------
 font = instancer.instantiateVariableFont(TTFont(FONT), {'wght': 620})
 gs, cmap, upm = font.getGlyphSet(), font.getBestCmap(), font['head'].unitsPerEm
-# "analytics" is set in a lighter weight of the same face, so the umbrella name "tidemark" leads
-light = instancer.instantiateVariableFont(TTFont(FONT), {'wght': 420})
-gs_l, cmap_l = light.getGlyphSet(), light.getBestCmap()
+# the product name is set in spaced capitals, a little lighter than the wordmark, so the umbrella name "tidemark" leads
+label = instancer.instantiateVariableFont(TTFont(FONT), {'wght': 540})
+gs_l, cmap_l = label.getGlyphSet(), label.getBestCmap()
 
 
 def _glyph_top(ch):
@@ -93,7 +93,8 @@ def _glyph_top(ch):
 
 ASC = _glyph_top('d')   # ascender height (em): the mark is scaled to this
 XH = font['OS/2'].sxHeight / upm
-DESC = 0.22   # descender depth of 'y' (em), so exported lockups are not clipped
+DESC = 0.02   # a little room below the baseline (no descenders in the lockup)
+CAP = 0.727   # cap height of Inter (em)
 
 
 def _run(text, size, glyphs, cm, tracking, y0=0.0):
@@ -115,18 +116,17 @@ def _run(text, size, glyphs, cm, tracking, y0=0.0):
     return parts, x - tracking * size, (xmin, ymin, xmax, ymax)
 
 
-def wordmark(size, tracking=-0.02, text=NAME, second=SECOND, gap_em=0.2):
-    """Two lines, left aligned: `text` in the wordmark weight, `second` below it in a lighter weight and sized so both
-    lines are exactly as wide. -> (path d, width, ink bounds (xmin, ymin, xmax, ymax), baseline of the second line)
-    in px, y down, first baseline at 0."""
+def wordmark(size, tracking=-0.02, text=NAME, second=SECOND, tracking2=0.14, gap_em=0.30):
+    """The brand word with the product name under it, left aligned. The capitals are sized for `tracking2` spacing so
+    the label is exactly as wide as the brand word. -> (path d, width, ink bounds (xmin, ymin, xmax, ymax), baseline of
+    the label) in px, y down, first baseline at 0."""
     parts1, w1, box1 = _run(text, size, gs, cmap, tracking)
     if not second:
         return ' '.join(parts1), w1, box1, 0.0
-    size2 = size * 0.8
-    w2 = _run(second, size2, gs_l, cmap_l, tracking)[1]
-    size2 *= w1 / w2
-    base2 = ASC * size2 + gap_em * size
-    parts2, w2, box2 = _run(second, size2, gs_l, cmap_l, tracking, y0=base2)
+    advance = sum(gs_l[cmap_l[ord(c)]].width for c in second) / upm
+    size2 = w1 / (advance + (len(second) - 1) * tracking2)
+    base2 = CAP * size2 + gap_em * size
+    parts2, w2, box2 = _run(second, size2, gs_l, cmap_l, tracking2, y0=base2)
     box = (min(box1[0], box2[0]), min(box1[1], box2[1]), max(box1[2], box2[2]), max(box1[3], box2[3]))
     return ' '.join(parts1 + parts2), max(w1, w2), box, base2
 
@@ -145,7 +145,7 @@ def write(path, content):
 
 # ---- lockups --------------------------------------------------------------------------------------------------
 PAD = 0.04
-MARK_SHARE = 0.8   # mark height relative to the two-line text block, centered on it
+MARK_SHARE = 1.0   # the mark runs from the top of the ascenders to the baseline of the label
 LOCKUP = 0.72   # first-line size relative to the old one-line wordmark, so the two-line lockup stays compact
 
 
