@@ -4,6 +4,12 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+### Added
+- The Docker image can run with a read-only root filesystem, for hosts that run many installs side by side. Mount `/data` as a volume, `/config`, `/tmp` and `/app/bootstrap/cache` as tmpfs, and set `TIDEMARK_HOSTED=true`, which also keeps the settings file readable by its owner only. Nothing changes if you don't.
+
+### Changed
+- The Docker image starts with a small init process (tini) so stray child processes are cleaned up, and the paths the app writes to are linked into `/data` when the image is built.
+
 ### Fixed
 - Site settings → Data → Delete by filter: the confirmation window now closes after the visits are deleted, instead of staying open and ignoring the close button.
 

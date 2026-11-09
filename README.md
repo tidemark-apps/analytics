@@ -63,7 +63,7 @@ A pre-built image for amd64 and arm64 is published to `ghcr.io/tidemark-apps/ana
 docker compose up -d
 ```
 
-then open `http://localhost:8080/install` to create your admin account. Everything that changes lives in the `/data` volume (settings, the SQLite database, logs), the scheduler runs inside the container, and you update by pulling a newer image (`docker compose pull && docker compose up -d`); migrations run on the first request. Set `PUID`/`PGID` to run as a different user (Unraid uses `99`/`100`). MySQL, MariaDB and PostgreSQL work too: choose them in the installer and point them at your database container.
+then open `http://localhost:8080/install` to create your admin account. Everything that changes lives in the `/data` volume (settings, the SQLite database, logs), the scheduler runs inside the container, and you update by pulling a newer image (`docker compose pull && docker compose up -d`); migrations run on the first request. Set `PUID`/`PGID` to run as a different user (Unraid uses `99`/`100`). MySQL, MariaDB and PostgreSQL work too: choose them in the installer and point them at your database container. To run the container with a read-only root filesystem, mount `/config`, `/tmp` and `/app/bootstrap/cache` as tmpfs and set `TIDEMARK_HOSTED=true`.
 
 ### Local development
 
