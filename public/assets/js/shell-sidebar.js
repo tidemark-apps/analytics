@@ -48,7 +48,7 @@ export function Sidebar({ user, path, sites, side }) {
       ${tabs.map(([k, l, dot]) => html`${k === 'organization' && html`<div class="side-grp">Organization</div>`}<${SideLink} to=${tabPath(k)} icon=${ACCOUNT_ICONS[k] || 'settings'} label=${l} on=${accountOn(k)}>${dot && html`<span class="notif inline" aria-hidden="true"></span><span class="sr-only"> (update available)</span>`}<//>`)}
       ${user.is_admin && registry.adminUi && html`<a class="side-link" title=${registry.adminUi.label} href=${BASE + registry.adminUi.href}><${Icon} name="shield-check" size=${16} /><span>${registry.adminUi.label}</span><${Icon} name="chevron-right" size=${13} class="side-ext" /></a>`}
       <div class="side-grp">Resources</div>
-      <${SideExt} href="https://www.tidemarkanalytics.com/docs/" icon="book-open" label="Documentation" />
+      <${SideExt} href="https://hellotidemark.com/analytics/docs/" icon="book-open" label="Documentation" />
       ${registry.menuItems.filter((m) => !m.visible || m.visible(user)).map((m) => (m.onClick
         ? html`<button class="side-link" title=${m.label} onClick=${m.onClick}><${Icon} name=${m.icon || 'life-buoy'} size=${16} /><span>${m.label}</span><${SideBadge} m=${m} /></button>`
         : html`<${SideExt} href=${m.href} icon=${m.icon || 'external-link'} label=${m.label} external=${!!m.external}><${SideBadge} m=${m} /><//>`))}
