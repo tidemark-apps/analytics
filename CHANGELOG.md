@@ -4,6 +4,8 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+## [0.38.3] - 2026-11-09
+
 ### Added
 - A host that runs Tidemark for other people can set an install's plan with a JSON file (`TIDEMARK_PLAN_FILE`): how many sites and events a month it includes, whether recording stops at that limit, which features (alerts, branding, funnels, revenue, segments, journeys, campaign links, rollups) are on, whether personal data is always masked, and whether the install is paused. Changing the file applies on the next request, and a missing or broken file limits nothing. `php artisan tidemark:usage` prints this month's events and the sites against the plan (`--json` for scripts).
 - `php artisan tidemark:provision you@example.com` sets up a fresh install without the web installer: it creates the database tables and the owner account, and prints a one-time link for choosing a password (`--hours` sets how long it works, `--json` prints it for scripts). Run it again to get a new link.
