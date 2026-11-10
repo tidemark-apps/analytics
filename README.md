@@ -146,6 +146,7 @@ Logo (pictorial mark: pier pilings with a tide line across them), palette, typog
 | `TIDEMARK_REGISTRATION` | `false` | Allow sign-ups |
 | `TIDEMARK_INVITES` | `false` | Let site owners invite people who have no account by e-mail (needs working `MAIL_*` settings). Invitations expire after `TIDEMARK_INVITE_HOURS` (default 72) |
 | `TIDEMARK_ORGANIZATIONS` | `true` | Set to `false` to hide organizations, teams and moving sites between organizations (for an install that serves one customer). Sites are still shared with people one by one |
+| `TIDEMARK_PLAN_FILE` | *(unset)* | Path to a JSON file that sets the install's plan: site and monthly event limits, which features are on, paused or not. For a host that runs Tidemark for others; unset means no limits |
 | `TIDEMARK_INGEST` | `sync` | `queue` buffers writes; drained by `schedule:run` or a worker |
 | `TIDEMARK_ANALYTICS_DB` | *(app DB)* | Separate connection for `visits`, `events` and `event_props` |
 | `TIDEMARK_IGNORE_IP`, `TIDEMARK_HOSTNAMES` | – | Comma-separated lists |

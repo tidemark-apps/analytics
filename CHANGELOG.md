@@ -5,6 +5,7 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 ## [Unreleased]
 
 ### Added
+- A host that runs Tidemark for other people can set an install's plan with a JSON file (`TIDEMARK_PLAN_FILE`): how many sites and events a month it includes, whether recording stops at that limit, which features (alerts, branding, funnels, revenue, segments, journeys, campaign links, rollups) are on, whether personal data is always masked, and whether the install is paused. Changing the file applies on the next request, and a missing or broken file limits nothing. `php artisan tidemark:usage` prints this month's events and the sites against the plan (`--json` for scripts).
 - Set `TIDEMARK_ORGANIZATIONS=false` to turn organizations off, for an install that serves a single customer. The organization switcher, the Organization and Teams settings and "Move to another organization" disappear, every site you can open is listed together, and sites are still shared with people one by one. Everything stays on as before unless you set it.
 
 ## [0.38.2] - 2026-11-09
