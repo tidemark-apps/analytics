@@ -6,6 +6,7 @@ use App\Analytics\Ingest\DatabaseSink;
 use App\Analytics\Ingest\EventSink;
 use App\Analytics\Ingest\QueueSink;
 use App\Contracts\Entitlements;
+use App\Support\ConfiguredEntitlements;
 use App\Support\DefaultEntitlements;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\ServiceProvider;
@@ -17,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
         // Swap the sink (queue, ClickHouse, Kafka ...) without touching the collector.
         $this->app->bind(EventSink::class, fn () => config('tidemark.ingest') === 'queue' ? new QueueSink : new DatabaseSink);
         // singletonIf: an extension package that bound its own Entitlements earlier wins.
-        $this->app->singletonIf(Entitlements::class, DefaultEntitlements::class);
+        // A plan file (TIDEMARK_PLAN_FILE) hands the decisions to whoever hosts the install.
+        $this->app->singletonIf(Entitlements::class, fn () => config('tidemark.plan_file') ? new ConfiguredEntitlements : new DefaultEntitlements);
     }
 
     public function boot(): void

@@ -77,6 +77,9 @@ return [
     // E-mail invitations: sharing a site with an address that has no account sends an invitation instead of failing. Off by default
     // on self-hosted installs (accounts are then created by an administrator); on for Cloud. Needs working mail settings.
     'invites' => (bool) env('TIDEMARK_INVITES', env('TIDEMARK_MODE', 'self-hosted') === 'cloud'),
+    // A JSON file that sets this install's plan (limits, paused or not, which features are on); see App\Support\PlanFile. Unset means no limits.
+    'plan_file' => env('TIDEMARK_PLAN_FILE'),
+
     // Organizations, teams and moving sites between them. Turn off for an install that serves one customer: everyone keeps their
     // Personal organization behind the scenes and sites are shared with people one by one.
     'organizations' => (bool) env('TIDEMARK_ORGANIZATIONS', true),
