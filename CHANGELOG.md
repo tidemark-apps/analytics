@@ -4,6 +4,9 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+### Changed
+- The Documentation links in the app open the Tidemark help center (account.hellotidemark.com/kb), where the docs moved. The old addresses keep redirecting.
+
 ## [0.38.5] - 2026-11-10
 
 ### Added
