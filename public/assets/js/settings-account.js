@@ -67,7 +67,7 @@ function EmailReports() {
     setBusy(null);
   };
   return html`<${Section} title="Email reports" help="A short summary of each site: visitors, pageviews, top pages, sources and countries, goals and the notes on your graph, compared with the period before. Weekly reports arrive on Monday morning and monthly ones on the 1st, at 08:00 in each site's timezone.">
-      ${res.data && !res.data.mail && html`<div class="alert">This installation can't send email yet. Reports will start going out once outgoing email is set up (see MAIL_MAILER in the environment file).</div>`}
+      ${res.data && !res.data.mail && html`<div class="alert">${window.SD && window.SD.hosted ? "Email reports are paused: this account can't send email right now. Contact support if it doesn't come back soon." : "This installation can't send email yet. Reports will start going out once outgoing email is set up (see MAIL_MAILER in the environment file)."}</div>`}
       ${res.loading && !res.data ? html`<p class="muted">Loading…</p>` : sites.length === 0 ? html`<p class="muted">You don't have any sites yet.</p>`
         : html`<div class="rows">${sites.map((s) => html`<div class="rowitem boxed" key=${s.id}><span class="ri-ico" aria-hidden="true"><${Icon} name="mail" size=${16} /></span>
           <div class="grow ri-main"><b>${s.domain}</b><span class="muted">${s.frequency === 'weekly' ? 'Every Monday' : s.frequency === 'monthly' ? 'On the 1st of each month' : 'No email'}</span></div>
