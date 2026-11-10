@@ -24,6 +24,7 @@
             extensions: @json(array_values(config('tidemark.extensions', []))),
             legal: @json((object) array_filter(config('tidemark.legal', []))),
             brandUrl: @json(config('tidemark.brand_url')),
+            upgradeUrl: @json(config('tidemark.upgrade_url')),
             icons: @json(@filemtime(public_path('assets/icons.svg'))),
         };
     </script>
