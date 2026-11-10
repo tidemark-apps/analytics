@@ -73,6 +73,6 @@ class BrandingController extends Controller
             return null;
         }
 
-        return response()->json(['error' => 'branding_unavailable', 'message' => 'Custom branding is included with Pro.'], 403);
+        return response()->json(['error' => 'branding_unavailable', 'message' => 'Custom branding isn’t included in your plan.'], 403);
     }
 }

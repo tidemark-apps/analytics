@@ -42,7 +42,7 @@ class AlertController extends Controller
     /** Alerts come with some plans only; whoever lost access can still switch rules off and delete them. */
     private function requireAlerts(Request $r): void
     {
-        abort_unless($r->attributes->get('site')->alertsAllowed(), 403, 'Alerts and webhooks are included with Pro.');
+        abort_unless($r->attributes->get('site')->alertsAllowed(), 403, 'Alerts and webhooks aren’t included in your plan.');
     }
 
     public function storeRule(Request $r)
