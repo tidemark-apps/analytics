@@ -118,6 +118,33 @@ class ConfiguredEntitlementsTest extends TestCase
         $this->postJson('/api/sites', ['domain' => 'second.com'])->assertUnprocessable();
     }
 
+    public function test_a_trial_that_has_ended_records_nothing_and_adds_no_sites_but_stays_readable(): void
+    {
+        $this->plan(['name' => 'Trial', 'expires_at' => gmdate('c', time() + 3600)]);
+        $this->owner();
+        $this->postJson('/api/sites', ['domain' => 'example.com'])->assertCreated();
+        $this->send();
+        $this->assertSame(1, DB::table('events')->count());
+        $this->getJson('/api/me')->assertJsonPath('user.plan.stopped', null)->assertJsonPath('user.plan.expires_at', gmdate('Y-m-d\TH:i:s\Z', time() + 3600));
+
+        $this->plan(['name' => 'Trial', 'expires_at' => gmdate('c', time() - 60)]);
+
+        $this->send();
+        $this->assertSame(1, DB::table('events')->count());
+        $this->postJson('/api/sites', ['domain' => 'second.com'])->assertUnprocessable()->assertJsonPath('errors.domain.0', 'Your trial has ended. Choose a plan to add sites.');
+        $this->getJson('/api/me')->assertJsonPath('user.plan.stopped', 'expired');
+        $this->getJson('/api/sites')->assertOk();
+
+        $this->plan(['expires_at' => 'not a date']); // a value that can't be read never locks anyone out
+        $this->send();
+        $this->assertSame(2, DB::table('events')->count());
+
+        Artisan::call('tidemark:usage', ['--json' => true]);
+        $this->plan(['expires_at' => gmdate('c', time() - 60)]);
+        Artisan::call('tidemark:usage', ['--json' => true]);
+        $this->assertTrue(json_decode(trim(Artisan::output()), true)['expired']);
+    }
+
     public function test_a_hard_limit_stops_recording_at_the_monthly_events_and_still_answers_202(): void
     {
         $this->plan(['events_per_month' => 2, 'hard_limit' => true]);

@@ -23,6 +23,8 @@ class Usage extends Command
         $usage = [
             'plan' => PlanFile::name(),
             'suspended' => PlanFile::suspended(),
+            'expires_at' => PlanFile::expiresAt()?->format('Y-m-d\TH:i:s\Z'),
+            'expired' => PlanFile::expired(),
             'period_start' => MonthlyEvents::periodStart(),
             'events' => MonthlyEvents::countFromDatabase(),
             'events_included' => PlanFile::eventsPerMonth(),
