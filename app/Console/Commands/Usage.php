@@ -2,10 +2,15 @@
 
 namespace App\Console\Commands;
 
+use App\Analytics\Support\Sql;
 use App\Models\Site;
+use App\Models\User;
 use App\Support\MonthlyEvents;
 use App\Support\PlanFile;
+use App\Updates\Updater;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class Usage extends Command
 {
@@ -24,6 +29,10 @@ class Usage extends Command
             'hard_limit' => PlanFile::hardLimit(),
             'sites' => Site::real()->count(),
             'sites_included' => PlanFile::sites(),
+            'users' => User::count(),
+            'last_event_at' => $this->lastEventAt(),
+            'database_bytes' => $this->databaseBytes(),
+            'version' => (new Updater)->version(),
         ];
 
         if ($this->option('json')) {
@@ -35,5 +44,25 @@ class Usage extends Command
         $this->table(['', ''], collect($usage)->map(fn ($value, $key) => [str_replace('_', ' ', $key), is_bool($value) ? ($value ? 'yes' : 'no') : $value])->values()->all());
 
         return self::SUCCESS;
+    }
+
+    /** When the newest event arrived (UTC, ISO 8601), or null if nothing was recorded yet. */
+    private function lastEventAt(): ?string
+    {
+        $at = Sql::connection()->table('events')->max('created_at');
+
+        return $at ? Carbon::parse($at, 'UTC')->toIso8601String() : null;
+    }
+
+    /** Size of the SQLite database file; null on other databases, where the host measures the server instead. */
+    private function databaseBytes(): ?int
+    {
+        $db = DB::connection();
+        if ($db->getDriverName() !== 'sqlite') {
+            return null;
+        }
+        $path = $db->getDatabaseName();
+
+        return is_file($path) ? (int) filesize($path) : null;
     }
 }

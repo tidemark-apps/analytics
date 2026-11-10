@@ -224,5 +224,9 @@ class ConfiguredEntitlementsTest extends TestCase
         $this->assertSame(2, $usage['sites_included']);
         $this->assertTrue($usage['hard_limit']);
         $this->assertFalse($usage['suspended']);
+        $this->assertSame(1, $usage['users']);
+        $this->assertNotNull($usage['last_event_at']);
+        $this->assertArrayHasKey('database_bytes', $usage);
+        $this->assertArrayHasKey('version', $usage);
     }
 }
