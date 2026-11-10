@@ -16,7 +16,10 @@ fi
 
 DATA=/data
 mkdir -p "$DATA/storage/app/public" "$DATA/storage/framework/cache/data" "$DATA/storage/framework/sessions" "$DATA/storage/framework/views" "$DATA/storage/logs"
-ln -sfn "$DATA/storage" /app/storage
+# /app/storage, /app/.env and the SQLite file are symlinks into /data made when the image is built; only (re)create one that is missing or
+# wrong, so a read-only root filesystem works.
+link() { [ "$(readlink "$2" 2>/dev/null)" = "$1" ] || ln -sfn "$1" "$2"; }
+link "$DATA/storage" /app/storage
 
 if [ ! -f "$DATA/.env" ]; then
     cp /app/.env.example "$DATA/.env"
@@ -24,12 +27,15 @@ if [ ! -f "$DATA/.env" ]; then
     sed -i "s#^APP_KEY=.*#APP_KEY=${KEY}#" "$DATA/.env"
     sed -i "s#^LOG_STACK=.*#LOG_STACK=single#" "$DATA/.env"
 fi
-ln -sf "$DATA/.env" /app/.env
+link "$DATA/.env" /app/.env
+# hosted installs: the settings file holds secrets, keep it owner-only
+[ "$TIDEMARK_HOSTED" = "true" ] && chmod 600 "$DATA/.env"
 
 # the web installer's SQLite option writes database/database.sqlite, which lives in the volume
 [ -f "$DATA/database.sqlite" ] || : > "$DATA/database.sqlite"
-ln -sf "$DATA/database.sqlite" /app/database/database.sqlite
+link "$DATA/database.sqlite" /app/database/database.sqlite
 
+# Laravel's generated caches; on a read-only root filesystem mount a writable tmpfs here
 rm -f /app/bootstrap/cache/*.php
 
 # the scheduler: prunes old events, drains the ingest queue and looks for new versions

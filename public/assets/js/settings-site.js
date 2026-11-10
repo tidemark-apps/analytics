@@ -174,7 +174,7 @@ function DeleteByFilter({ site }) {
   const remove = async () => {
     const r = await api(`/sites/${site.domain}/data/delete`, { method: 'POST', body: { ...body(), confirm_visits: found.visits } });
     toast(`Deleted ${r.visits.toLocaleString()} ${r.visits === 1 ? 'visit' : 'visits'}`);
-    setFound(null); history.reload();
+    setConfirm(false); setFound(null); history.reload();
   };
   return html`<${Section} title="Delete by filter" help="Remove collected visits that match conditions you choose, for example a page that leaked something or a day of test traffic. Everything in a matching visit goes with it, so reports stay consistent. Imported history is not touched."
     footer=${html`<span class="help">${found ? `${found.visits.toLocaleString()} ${found.visits === 1 ? 'visit' : 'visits'} and ${found.events.toLocaleString()} ${found.events === 1 ? 'event' : 'events'} match.` : 'Preview first: nothing is deleted until you confirm.'}</span>
@@ -194,7 +194,7 @@ function DeleteByFilter({ site }) {
         <tbody>${history.data.data.map((d) => html`<tr><td data-label="When" class="nowrap">${new Date(d.at).toLocaleString()}</td><td data-label="Who">${d.by}</td>
           <td data-label="What">${[...d.filters.map(describeFilter), d.date_from || d.date_to ? `Dates ${d.date_from || '…'} to ${d.date_to || '…'}` : null].filter(Boolean).join('; ')}</td>
           <td data-label="Visits" class="right num">${d.visits.toLocaleString()}</td><td data-label="Events" class="right num">${d.events.toLocaleString()}</td></tr>`)}</tbody></table></div>`}
-    ${confirm && html`<${TypedConfirm} title="Delete matching visits?" phrase=${site.domain} confirmLabel="Delete visits" onClose=${() => setConfirm(false)} onConfirm=${remove}
+    ${confirm && found && html`<${TypedConfirm} title="Delete matching visits?" phrase=${site.domain} confirmLabel="Delete visits" onClose=${() => setConfirm(false)} onConfirm=${remove}
       message=${`${found.visits.toLocaleString()} ${found.visits === 1 ? 'visit' : 'visits'} and ${found.events.toLocaleString()} ${found.events === 1 ? 'event' : 'events'} will be permanently deleted from ${site.domain}. This can't be undone.`} />`}
   <//>`;
 }

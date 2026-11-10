@@ -155,7 +155,8 @@ class TwoFactorTest extends TestCase
         $key = openssl_pkey_new(['curve_name' => 'prime256v1', 'private_key_type' => OPENSSL_KEYTYPE_EC]);
         $d = openssl_pkey_get_details($key);
 
-        return [$key, $d['ec']['x'], $d['ec']['y']];
+        // OpenSSL drops leading zero bytes; COSE coordinates are always 32 bytes
+        return [$key, str_pad($d['ec']['x'], 32, "\0", STR_PAD_LEFT), str_pad($d['ec']['y'], 32, "\0", STR_PAD_LEFT)];
     }
 
     private function cborBytes(string $b): string

@@ -35,7 +35,7 @@ const allRoutes = () => [...head, ...registry.routes, ...tail];
 const RESERVED = new Set(['', 'api', 'js', 'assets', 'install', 'up', 'admin']);
 
 function PublicFooter() {
-  return html`<footer class="pubfoot"><a href=${window.SD.brandUrl || 'https://tidemarkanalytics.com'} target="_blank" rel="noopener"><span>Analytics by</span><${Lockup} size=${15} /></a></footer>`;
+  return html`<footer class="pubfoot"><a href=${window.SD.brandUrl || 'https://hellotidemark.com/analytics/'} target="_blank" rel="noopener"><span>Analytics by</span><${Lockup} size=${15} /></a></footer>`;
 }
 
 const focusMain = (e) => { if (e) e.preventDefault(); const t = document.querySelector('main'); if (t) { t.setAttribute('tabindex', '-1'); t.focus(); } };

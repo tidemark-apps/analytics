@@ -5,7 +5,7 @@
   </picture>
 </p>
 
-[![CI](https://github.com/tidemark-apps/analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/tidemark-apps/analytics/actions/workflows/ci.yml) [![Latest release](https://img.shields.io/github/v/release/tidemark-apps/analytics)](https://github.com/tidemark-apps/analytics/releases/latest) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Community](https://img.shields.io/badge/community-forum-0e7c86)](https://community.tidemarkanalytics.com)
+[![CI](https://github.com/tidemark-apps/analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/tidemark-apps/analytics/actions/workflows/ci.yml) [![Latest release](https://img.shields.io/github/v/release/tidemark-apps/analytics)](https://github.com/tidemark-apps/analytics/releases/latest) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Community](https://img.shields.io/badge/community-forum-0e7c86)](https://community.hellotidemark.com)
 
 <a href="https://www.opensourcealternatives.to"><img src="https://www.opensourcealternatives.to/badge-osa.svg" alt="As seen on Open Source Alternatives"></a>
 <a href="https://alternativeto.net/software/tidemark-analytics/about/?utm_source=badge&utm_medium=referral" target="_blank"><img src="https://alternativeto.net/static/badges/badge-wide-color.svg" alt="Tidemark Analytics | AlternativeTo" width="284" height="51"></a>
@@ -27,18 +27,11 @@
 - Works on SQLite, MySQL/MariaDB and PostgreSQL
 - Designed to scale out later: swappable event sink, separate analytics database connection, stateless app tier
 
-## Don't want to run it yourself? Tidemark Cloud
+## Hosting
 
-The same open-source Tidemark Analytics, hosted for you at [tidemarkanalytics.com](https://www.tidemarkanalytics.com): no server, no updates, nothing to install. Sign up, paste one line into your site's `<head>`, and your dashboard is ready.
+Tidemark Analytics is software you run yourself, free under the MIT license. The hosted version, Tidemark Cloud, is being reworked and will return later. Find out more about Tidemark at [hellotidemark.com](https://hellotidemark.com/analytics/).
 
-- **Free to start:** 1 site, 10,000 events a month and 6 months of history, with every report, filter, goal and shared link.
-- **Pro, $7 a month ($70 a year):** unlimited sites, 250,000 events a month, 5 years of history, funnels, revenue, segments, journeys, rollups, alerts and webhooks, and your own logo and color on public dashboards. Need more events? Add packs of 250,000 for $5 whenever you like.
-- **Still private by design:** no cookies and no stored IP addresses, and direct support from inside the app.
-- **Switching?** Import your history from Plausible's CSV export.
-
-[**Try the live demo**](https://www.tidemarkanalytics.com/tidemarkanalytics.com) · [**See pricing**](https://www.tidemarkanalytics.com/cloud/) · [**Start free**](https://app.tidemarkanalytics.com/register?utm_source=github&utm_medium=readme&utm_campaign=readme-cloud)
-
-Prefer to host it yourself? Everything below is for you, and it is free under the MIT license.
+Everything below is about running it yourself.
 
 ## Install on shared hosting (no SSH)
 
@@ -63,7 +56,7 @@ A pre-built image for amd64 and arm64 is published to `ghcr.io/tidemark-apps/ana
 docker compose up -d
 ```
 
-then open `http://localhost:8080/install` to create your admin account. Everything that changes lives in the `/data` volume (settings, the SQLite database, logs), the scheduler runs inside the container, and you update by pulling a newer image (`docker compose pull && docker compose up -d`); migrations run on the first request. Set `PUID`/`PGID` to run as a different user (Unraid uses `99`/`100`). MySQL, MariaDB and PostgreSQL work too: choose them in the installer and point them at your database container.
+then open `http://localhost:8080/install` to create your admin account. Everything that changes lives in the `/data` volume (settings, the SQLite database, logs), the scheduler runs inside the container, and you update by pulling a newer image (`docker compose pull && docker compose up -d`); migrations run on the first request. Set `PUID`/`PGID` to run as a different user (Unraid uses `99`/`100`). MySQL, MariaDB and PostgreSQL work too: choose them in the installer and point them at your database container. To run the container with a read-only root filesystem, mount `/config`, `/tmp` and `/app/bootstrap/cache` as tmpfs and set `TIDEMARK_HOSTED=true`.
 
 ### Local development
 
@@ -208,7 +201,7 @@ MIT
 
 ## Community
 
-Questions, ideas and show-and-tell: join the [Tidemark community](https://community.tidemarkanalytics.com). Bugs belong in [GitHub issues](https://github.com/tidemark-apps/analytics/issues).
+Questions, ideas and show-and-tell: join the [Tidemark community](https://community.hellotidemark.com). Bugs belong in [GitHub issues](https://github.com/tidemark-apps/analytics/issues).
 
 ## Contributing
 

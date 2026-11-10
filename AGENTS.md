@@ -222,7 +222,7 @@ Plain words for the person running Tidemark, written to them ("Remove imported d
 - User-facing changes get a line under `## [Unreleased]` in `CHANGELOG.md` (`### Added` / `Changed` / `Fixed` / `Removed`), written for the people who run Tidemark in plain words. Refactors, tests and CI need no entry. Extension API changes get an "For extensions:" line.
 - Cutting a release is the maintainer's job and needs the user's go-ahead: PR `develop` → `main` with `VERSION` and the changelog heading set, merge commit, tag `vX.Y.Z` on `main`, then tag and deploy Cloud.
 - Release type decides the follow-ups: **major** (new features): update the marketing site and docs, decide per feature whether it is Pro or free on Cloud and say why, write a blog post, draft a post per social profile. **Minor fix/behaviour change:** update site/docs only where they are now wrong. **Security fix:** also a social alert. Always show drafts and wait for a yes.
-- The public roadmap board (GitHub project 1) is kept current: In progress when started, Done when shipped, Blocked plus a reason when waiting on another card.
+- The public roadmap lives on the community forum (community.hellotidemark.com, category Ideas and feedback; board at /boards/roadmap/1). Keep each feature's status tag current: In progress when started, Shipped when released.
 
 ## Differences between the other repos
 
