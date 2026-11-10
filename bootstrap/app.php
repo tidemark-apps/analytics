@@ -3,6 +3,7 @@
 use App\Http\Middleware\ApiAuth;
 use App\Http\Middleware\CollectCors;
 use App\Http\Middleware\EnsureInstalled;
+use App\Http\Middleware\RequireOrganizations;
 use App\Http\Middleware\RunPendingUpdate;
 use App\Http\Middleware\SiteAccess;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -37,6 +38,7 @@ return Application::configure(basePath: $root)
             'api.auth' => ApiAuth::class,
             'site' => SiteAccess::class,
             'installed' => EnsureInstalled::class,
+            'organizations' => RequireOrganizations::class,
             'cors.collect' => CollectCors::class,
         ]);
         // The JSON API authenticates with Bearer keys or the session cookie and has its own CSRF guard (see ApiAuth).

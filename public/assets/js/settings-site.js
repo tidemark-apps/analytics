@@ -2,7 +2,7 @@
 import { html, useState, useEffect, useRef, useApi, api, navigate, Link, Icon, toast, copy, UserCtx, useContext, useDocTitle, countryName, flag, BASE } from './lib.js';
 import { Loading, Empty, Section, ErrorBox, Field, Confirm, TypedConfirm, Toggle, CodeBlock, Avatar } from './ui.js';
 import { Snippet } from './dashboard.js';
-import { useScope } from './org.js';
+import { useScope, organizationsOn } from './org.js';
 import { brandTheme } from './brand.js';
 import { importPlausible, removeImported } from './data-import.js';
 import { SaveFooter, SettingsShell, firstError, zones } from './settings-common.js';
@@ -145,7 +145,7 @@ function Tracking({ site, reload }) {
 const Conversions = ({ site }) => html`<${Goals} site=${site} /><${Funnels} site=${site} /><${EventDocs} site=${site} />`;
 
 /** Who can see the site, and how it looks to them. */
-const Access = ({ site, reload }) => html`${!site.rollup && html`<${People} site=${site} />`}<${Visibility} site=${site} reload=${reload} /><${Branding} site=${site} reload=${reload} />${!site.rollup && site.is_owner && html`<${MoveSite} site=${site} reload=${reload} />`}`;
+const Access = ({ site, reload }) => html`${!site.rollup && html`<${People} site=${site} />`}<${Visibility} site=${site} reload=${reload} /><${Branding} site=${site} reload=${reload} />${!site.rollup && site.is_owner && organizationsOn() && html`<${MoveSite} site=${site} reload=${reload} />`}`;
 
 const DELETE_DIMS = [['page', 'Page'], ['country', 'Country (two letters)'], ['source', 'Source'], ['utm_campaign', 'Campaign'], ['utm_source', 'UTM source'], ['utm_medium', 'UTM medium'], ['browser', 'Browser'], ['os', 'Operating system'], ['device', 'Device'], ['goal', 'Goal or event'], ['prop', 'Event property']];
 const dimLabel = (d) => (d.startsWith('prop:') ? `Property ${d.slice(5)}` : (DELETE_DIMS.find((x) => x[0] === d) || [d, d])[1]);
@@ -458,7 +458,7 @@ function RollupSites({ site, reload }) {
   const members = site.rollup.sites.map((x) => x.domain);
   const count = all ? list.length || site.rollup.count : chosen.length;
   const toggle = (d, on) => setChosen(on ? [...chosen, d] : chosen.filter((x) => x !== d));
-  const OPTIONS = [[true, 'All the sites in this organization', 'layers', 'Includes the sites added later.'], [false, 'Only the sites I choose', 'funnel', 'Pick exactly which sites to add up.']];
+  const OPTIONS = [[true, organizationsOn() ? 'All the sites in this organization' : 'All your sites', 'layers', 'Includes the sites added later.'], [false, 'Only the sites I choose', 'funnel', 'Pick exactly which sites to add up.']];
   return html`<${Section} title="Sites in this rollup" footer=${html`<${SaveFooter} help=${`${count} ${count === 1 ? 'site' : 'sites'} in this rollup.`} dirty=${dirty && (all || chosen.length > 0)} onSave=${save} label="Save changes" />`} help="A rollup adds up the visits of several of your sites on one dashboard. Your sites themselves are never changed.">
     ${err && html`<div class="alert">${err}</div>`}
     <div class="opt-cards" role="radiogroup" aria-label="Which sites">${OPTIONS.map(([v, t, i, d]) => html`<button type="button" role="radio" aria-checked=${all === v} class=${'opt-card' + (all === v ? ' on' : '')} onClick=${() => { setAll(v); if (!v && !chosen.length) setChosen(list.map((x) => x.domain)); }}>
@@ -556,7 +556,7 @@ function People({ site }) {
         <button class="btn ghost sm" disabled=${!canInvite} onClick=${() => run(async () => { await api(`/sites/${site.domain}/invites/${i.id}/resend`, { method: 'POST' }); toast('Invitation sent again'); })}>Resend</button>
         <button class="btn ghost icon sm danger" aria-label=${'Cancel invitation for ' + i.email} title="Cancel invitation" onClick=${() => run(() => api(`/sites/${site.domain}/invites/${i.id}`, { method: 'DELETE' }))}><${Icon} name="trash-2" size=${15} /></button></li>`)}
     </ul>
-    <p class="muted small" style="margin:0">Someone who gets access in more than one way (directly, through a team or as an organization admin) has the strongest role they were given.${isOwner ? ' Manage teams under Settings → Teams.' : ''}</p>`}
+    <p class="muted small" style="margin:0">${organizationsOn() ? `Someone who gets access in more than one way (directly, through a team or as an organization admin) has the strongest role they were given.${isOwner ? ' Manage teams under Settings → Teams.' : ''}` : 'Someone who gets access in more than one way has the strongest role they were given.'}</p>`}
   <//>`;
 }
 

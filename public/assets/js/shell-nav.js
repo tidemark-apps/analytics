@@ -1,6 +1,7 @@
 // Shell: Routes of the sidebar and the `g` chords, account tabs, path helpers and the site list.
 import { useMemo, useApi, navigate, BASE } from './lib.js';
 import { registry } from './extensions.js';
+import { organizationsOn } from './org.js';
 
 const NOT_A_SITE = new Set(['', 'sites', 'settings', 'login', 'register', 'forgot-password', 'reset-password', 'share']);
 // the first segment of an extension's page ('/support' for '/support/:number?') is not a site either
@@ -42,7 +43,8 @@ export const ACCOUNT_ICONS = { profile: 'user', security: 'shield-check', keys: 
 /** The tabs of Account settings: [key, label, dot?]. Also drives the sidebar and the palette. */
 export function accountTabs(user) {
   const extra = registry.accountTabs.filter((x) => !x.visible || x.visible(user));
-  return [['profile', 'Profile'], ['security', 'Security'], ['keys', 'API keys'], ['reports', 'Email reports'], ['organization', 'Organization'], ['teams', 'Teams'], ...extra.map((x) => [x.key, x.label, !!(x.dot && x.dot(user))]),
+  const orgTabs = organizationsOn() ? [['organization', 'Organization'], ['teams', 'Teams']] : [];
+  return [['profile', 'Profile'], ['security', 'Security'], ['keys', 'API keys'], ['reports', 'Email reports'], ...orgTabs, ...extra.map((x) => [x.key, x.label, !!(x.dot && x.dot(user))]),
     ...(user.is_admin && !registry.adminUi ? [['users', 'Users'], ...(user.updater_enabled === false ? [] : [['updates', 'Updates', !!user.update]])] : [])];
 }
 

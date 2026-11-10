@@ -78,7 +78,7 @@ class SiteController extends Controller
             return response()->json(['error' => 'email_unverified', 'message' => 'Verify your email address before adding a site. We sent you a link.'], 403);
         }
         // the site belongs to an organization: the person's own by default, or one they are an admin of (its owner's plan and limits apply)
-        if (! empty($data['organization'])) {
+        if (config('tidemark.organizations') && ! empty($data['organization'])) {
             $org = Organization::whereKey($data['organization'])->whereIn('id', Organization::idsFor($user))->first();
             if (! $org) {
                 throw ValidationException::withMessages(['organization' => 'You are not part of that organization.']);

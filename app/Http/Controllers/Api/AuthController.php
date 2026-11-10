@@ -210,7 +210,7 @@ class AuthController extends Controller
             'updater_enabled' => (bool) config('tidemark.updater'),
             'can_rollup' => Site::rollupsAllowedFor($u),
             // organizations this person owns or administers, for the choice when adding a site or a team
-            'organizations' => Organization::whereIn('id', Organization::idsFor($u))->orderByDesc('personal')->orderBy('name')->get()->map(fn ($o) => ['id' => $o->id, 'name' => $o->name, 'personal' => $o->personal, 'logo_url' => $o->logoUrl(), 'role' => $o->owner_id === $u->id ? 'owner' : 'admin', 'can_rollup' => Site::rollupsAllowedFor($u, $o)])->values(),
+            'organizations' => Organization::whereIn('id', Organization::idsFor($u))->when(! config('tidemark.organizations'), fn ($q) => $q->where('personal', true))->orderByDesc('personal')->orderBy('name')->get()->map(fn ($o) => ['id' => $o->id, 'name' => $o->name, 'personal' => $o->personal, 'logo_url' => $o->logoUrl(), 'role' => $o->owner_id === $u->id ? 'owner' : 'admin', 'can_rollup' => Site::rollupsAllowedFor($u, $o)])->values(),
             // sites of other people's organizations this person can open (shown under "Shared with me")
             'shared_sites' => Site::where('kind', '!=', 'rollup')->memberOf($u)->where(fn ($q) => $q->whereNull('organization_id')->orWhereNotIn('organization_id', Organization::idsFor($u)))->exists(),
         ];
