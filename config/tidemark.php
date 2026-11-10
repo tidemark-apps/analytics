@@ -101,6 +101,10 @@ return [
     // Where the "Analytics by Tidemark" link in the footer of public dashboards points.
     'brand_url' => env('TIDEMARK_BRAND_URL', 'https://hellotidemark.com/analytics/'),
 
+    // Where the "upgrade your plan" links on locked features lead (opens in a new tab). A hosting service that sells plans sets this to
+    // its own page; left empty, they stay inside the app.
+    'upgrade_url' => env('TIDEMARK_UPGRADE_URL'),
+
     // Links to your legal pages. When set, the sign-in and sign-up screens show them, and sign-up says that creating an account
     // means agreeing to the terms. (A hosted service typically needs all three; self-hosters can leave them empty.)
     'legal' => [

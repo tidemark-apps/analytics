@@ -1,6 +1,6 @@
 // The report building blocks: ranked lists, the cards of the overview and the funnel and journey views.
 import { html, useState, setFilters, useEffect, useApi, addFilter, fmtShort, moneyShort, dur, flag, countryName, Icon, Link, scopeQuery } from './lib.js';
-import { useDebounced, Delta } from './ui.js';
+import { useDebounced, Delta, UpgradeLink } from './ui.js';
 import { WorldMap } from './chart.js';
 
 const DEVICE_ICON = { Desktop: 'monitor', Laptop: 'laptop', Tablet: 'tablet', Mobile: 'smartphone' };
@@ -161,7 +161,7 @@ export function FunnelsBody({ site, scope, poll }) {
   const res = useApi(active ? `/sites/${site.domain}/stats/funnels/${active.id}` : null, scope.params, [active && active.id], { enabled: !!active, poll });
   if (list.error) return html`<div class="panel-empty"><b>Couldn't load funnels</b><p class="muted">${list.error.message}</p><button class="btn sm" onClick=${list.reload}>Try again</button></div>`;
   if (!list.data) return html`<${RankedList} rows=${null} />`;
-  if (list.data.allowed === false) return html`<div class="panel-empty"><b>Funnels come with Pro</b><p class="muted">See where visitors drop off between the steps of a signup or purchase.</p>${site.can_manage && html`<${Link} to="/settings" class="btn sm">Upgrade<//>`}</div>`;
+  if (list.data.allowed === false) return html`<div class="panel-empty"><b>Funnels come with Pro</b><p class="muted">See where visitors drop off between the steps of a signup or purchase.</p>${site.can_manage && html`<${UpgradeLink} class="btn sm">Upgrade<//>`}</div>`;
   if (!funnels.length) return html`<div class="panel-empty"><b>See where visitors drop off</b><p class="muted">A funnel follows visitors through a series of goals, like pricing page, signup and purchase.</p>${site.can_manage && html`<${Link} to=${`/${site.domain}/settings/funnels`} class="btn sm">Set up a funnel<//>`}</div>`;
   return html`${funnels.length > 1 && html`<div class="subselect"><label class="sr-only" for="funnel-pick">Funnel</label><select id="funnel-pick" value=${active.id} onChange=${(e) => setPick(e.target.value)}>${funnels.map((f) => html`<option value=${f.id} selected=${f.id === active.id}>${f.name}</option>`)}</select></div>`}
     ${res.data ? html`<${FunnelChart} funnel=${res.data} loading=${res.loading} />` : res.error ? html`<div class="panel-empty"><b>Couldn't load this funnel</b><p class="muted">${res.error.message}</p><button class="btn sm" onClick=${res.reload}>Try again</button></div>` : html`<div class="skeleton" style="height:240px"></div>`}`;
@@ -186,7 +186,7 @@ export function ExploreBody({ site, scope }) {
   const [dir, setDir] = useState('start');
   const [steps, setSteps] = useState([]);
   const probe = useApi(`/sites/${site.domain}/stats/journeys`, { ...scope.params, steps: '[]', limit: 1 }, [], {});
-  if (probe.data && probe.data.allowed === false) return html`<div class="panel-empty"><b>Journeys come with Pro</b><p class="muted">See the routes visitors take through your site, step by step.</p>${site.can_manage && html`<${Link} to="/settings" class="btn sm">Upgrade<//>`}</div>`;
+  if (probe.data && probe.data.allowed === false) return html`<div class="panel-empty"><b>Journeys come with Pro</b><p class="muted">See the routes visitors take through your site, step by step.</p>${site.can_manage && html`<${UpgradeLink} class="btn sm">Upgrade<//>`}</div>`;
   const shown = Math.max(3, Math.min(steps.length + 1, 5));
   const pick = (i, x) => setSteps([...steps.slice(0, i), x]);
   return html`<div class="explore"><div class="explore-h"><b>Explore user journeys</b>${steps.length > 0 && html`<button class="btn sm ghost" onClick=${() => setSteps([])} title="Start again"><${Icon} name="refresh-cw" size=${13} /> Reset</button>`}</div>
