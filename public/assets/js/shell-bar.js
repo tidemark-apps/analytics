@@ -206,7 +206,7 @@ export function AppBar({ user, path, sites, side }) {
     <${Link} to="/sites" class="brand-mark" aria-label="Tidemark Analytics, all sites"><${Logo} size=${24} /><//>
     <nav class=${'crumbs' + (domain ? ' on-site' : '')} aria-label="Breadcrumb">
       <span class="crumb-sep" aria-hidden="true">/</span>
-      <${OrgSwitcher} user=${user} /><span class="crumb-sep" aria-hidden="true">/</span>
+      ${!scope.flat && scope.orgs.length > 0 && html`<${OrgSwitcher} user=${user} /><span class="crumb-sep" aria-hidden="true">/</span>`}
       ${domain ? html`<${SiteSwitcher} list=${sites.list} current=${current} domain=${domain} recents=${recents} user=${user} scopeId=${scope.id} /><span class="crumb-sep s2" aria-hidden="true">/</span><span class="crumb-cur muted sec" aria-current="page">${sectionLabel(path, domain)}</span>`
         : html`<span class="crumb-cur" aria-current="page">${sectionLabel(path, domain)}</span>`}
     </nav>
