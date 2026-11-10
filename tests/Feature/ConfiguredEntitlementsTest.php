@@ -229,4 +229,24 @@ class ConfiguredEntitlementsTest extends TestCase
         $this->assertArrayHasKey('database_bytes', $usage);
         $this->assertArrayHasKey('version', $usage);
     }
+
+    public function test_the_signed_in_person_is_told_when_the_plan_has_stopped_recording(): void
+    {
+        $this->owner();
+        $this->getJson('/api/me')->assertJsonPath('user.plan', null);
+
+        $this->plan(['name' => 'Trial', 'events_per_month' => 1, 'hard_limit' => true]);
+        $this->getJson('/api/me')->assertJsonPath('user.plan.stopped', null);
+
+        $this->postJson('/api/sites', ['domain' => 'example.com'])->assertCreated();
+        $this->send();
+        $this->getJson('/api/me')->assertJsonPath('user.plan.stopped', 'limit')->assertJsonPath('user.plan.events_included', 1)
+            ->assertJsonPath('user.plan.resumes_on', gmdate('Y-m-d', strtotime('first day of next month')));
+
+        $this->plan(['suspended' => true]);
+        $this->getJson('/api/me')->assertJsonPath('user.plan.stopped', 'paused');
+
+        $this->plan(['events_per_month' => 1]); // an allowance without a hard limit never stops recording
+        $this->getJson('/api/me')->assertJsonPath('user.plan.stopped', null);
+    }
 }
