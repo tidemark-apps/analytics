@@ -233,13 +233,15 @@ class AuthController extends Controller
         $included = PlanFile::eventsPerMonth();
         $events = $included > 0 && PlanFile::hardLimit() ? MonthlyEvents::current() : null;
         $paused = PlanFile::suspended();
+        $expired = PlanFile::expired();
         $full = $events !== null && $events >= $included;
 
         return [
             'name' => PlanFile::name(),
-            'stopped' => $paused ? 'paused' : ($full ? 'limit' : null),
+            'stopped' => $paused ? 'paused' : ($expired ? 'expired' : ($full ? 'limit' : null)),
             'events_included' => $included ?: null,
-            'resumes_on' => $full && ! $paused ? gmdate('Y-m-d', strtotime('first day of next month')) : null,
+            'expires_at' => PlanFile::expiresAt()?->format('Y-m-d\TH:i:s\Z'),
+            'resumes_on' => $full && ! $paused && ! $expired ? gmdate('Y-m-d', strtotime('first day of next month')) : null,
         ];
     }
 }
