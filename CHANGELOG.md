@@ -5,6 +5,7 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 ## [Unreleased]
 
 ## [0.38.6] - 2026-11-10
+
 ### Added
 - `TIDEMARK_PORTAL_URL`: a host that runs Tidemark for other people can point to the customer's account page. When set, the sidebar gets a Your account section (Client portal, Support tickets) and the Help menu gets Contact support and Client portal. Left empty, nothing is shown.
 
