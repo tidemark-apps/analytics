@@ -84,7 +84,7 @@ return [
     'invite_pending_limit' => (int) env('TIDEMARK_INVITE_PENDING_LIMIT', 100),
 
     // Where the "Analytics by Tidemark" link in the footer of public dashboards points.
-    'brand_url' => env('TIDEMARK_BRAND_URL', 'https://tidemarkanalytics.com'),
+    'brand_url' => env('TIDEMARK_BRAND_URL', 'https://hellotidemark.com/analytics/'),
 
     // Links to your legal pages. When set, the sign-in and sign-up screens show them, and sign-up says that creating an account
     // means agreeing to the terms. (A hosted service typically needs all three; self-hosters can leave them empty.)

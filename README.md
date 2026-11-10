@@ -27,18 +27,11 @@
 - Works on SQLite, MySQL/MariaDB and PostgreSQL
 - Designed to scale out later: swappable event sink, separate analytics database connection, stateless app tier
 
-## Don't want to run it yourself? Tidemark Cloud
+## Hosting
 
-The same open-source Tidemark Analytics, hosted for you at [tidemarkanalytics.com](https://www.tidemarkanalytics.com): no server, no updates, nothing to install. Sign up, paste one line into your site's `<head>`, and your dashboard is ready.
+Tidemark Analytics is software you run yourself, free under the MIT license. The hosted version, Tidemark Cloud, is being reworked and will return later. Find out more about Tidemark at [hellotidemark.com](https://hellotidemark.com/analytics/).
 
-- **Free to start:** 1 site, 10,000 events a month and 6 months of history, with every report, filter, goal and shared link.
-- **Pro, $7 a month ($70 a year):** unlimited sites, 250,000 events a month, 5 years of history, funnels, revenue, segments, journeys, rollups, alerts and webhooks, and your own logo and color on public dashboards. Need more events? Add packs of 250,000 for $5 whenever you like.
-- **Still private by design:** no cookies and no stored IP addresses, and direct support from inside the app.
-- **Switching?** Import your history from Plausible's CSV export.
-
-[**Try the live demo**](https://www.tidemarkanalytics.com/tidemarkanalytics.com) · [**See pricing**](https://www.tidemarkanalytics.com/cloud/) · [**Start free**](https://app.tidemarkanalytics.com/register?utm_source=github&utm_medium=readme&utm_campaign=readme-cloud)
-
-Prefer to host it yourself? Everything below is for you, and it is free under the MIT license.
+Everything below is about running it yourself.
 
 ## Install on shared hosting (no SSH)
 

@@ -33,7 +33,7 @@ function HelpMenu({ user }) {
   const items = registry.menuItems.filter((m) => m.help && (!m.visible || m.visible(user)));
   return html`<${Pop} align="right" ariaLabel=${dot ? 'Help (something needs your attention)' : 'Help'} btnClass="btn ghost icon help-btn" label=${html`<${Icon} name="circle-help" size=${17} />${dot && html`<span class="notif on-avatar" aria-hidden="true"></span>`}`}>
     ${(close) => html`<div style="min-width:220px">
-      <a class="item" href="https://www.tidemarkanalytics.com/docs/" target="_blank" rel="noopener" onClick=${close}><span>Documentation</span><${Icon} name="book-open" size=${14} /></a>
+      <a class="item" href="https://hellotidemark.com/analytics/docs/" target="_blank" rel="noopener" onClick=${close}><span>Documentation</span><${Icon} name="book-open" size=${14} /></a>
       ${items.map((m) => (m.onClick
         ? html`<button class="item" onClick=${() => { close(); m.onClick(); }}><span>${m.label}</span><${BadgeCount} m=${m} /><${Icon} name=${m.icon || 'external-link'} size=${14} /></button>`
         : html`<a class="item" href=${m.href} target=${m.external ? '_blank' : null} rel=${m.external ? 'noopener' : null} onClick=${close}><span>${m.label}</span><${BadgeCount} m=${m} /><${Icon} name=${m.icon || 'external-link'} size=${14} /></a>`))}
