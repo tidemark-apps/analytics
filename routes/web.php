@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\CampaignRedirectController;
+use App\Http\Controllers\HostSignInController;
 use App\Http\Controllers\InstallController;
 use App\Http\Controllers\ReportUnsubscribeController;
 use App\Models\Site;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+// Sign-in link from the service that hosts this install (see App\Support\HostToken)
+Route::get('/sso', HostSignInController::class)->middleware('throttle:20,1');
 
 // Browser installer (shared hosting)
 Route::get('/install', [InstallController::class, 'show']);

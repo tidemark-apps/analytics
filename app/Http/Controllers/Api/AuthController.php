@@ -8,7 +8,9 @@ use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\Site;
 use App\Models\User;
+use App\Support\HostToken;
 use App\Support\SecondFactor;
+use App\Support\SupportGuard;
 use App\Updates\Updater;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
@@ -126,6 +128,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        SupportGuard::current($request)?->end();
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -208,6 +211,8 @@ class AuthController extends Controller
             'timezone' => $u->timezone, 'locale' => $u->locale, 'two_factor' => $u->hasTwoFactor(),
             'email_verified' => $u->hasVerifiedEmail(), 'verification_required' => (bool) config('tidemark.verify_email'),
             'updater_enabled' => (bool) config('tidemark.updater'),
+            'support' => SupportGuard::current(request())?->present(),
+            'support_access' => HostToken::enabled() && config('tidemark.support_access'),
             'can_rollup' => Site::rollupsAllowedFor($u),
             // organizations this person owns or administers, for the choice when adding a site or a team
             'organizations' => Organization::whereIn('id', Organization::idsFor($u))->when(! config('tidemark.organizations'), fn ($q) => $q->where('personal', true))->orderByDesc('personal')->orderBy('name')->get()->map(fn ($o) => ['id' => $o->id, 'name' => $o->name, 'personal' => $o->personal, 'logo_url' => $o->logoUrl(), 'role' => $o->owner_id === $u->id ? 'owner' : 'admin', 'can_rollup' => Site::rollupsAllowedFor($u, $o)])->values(),

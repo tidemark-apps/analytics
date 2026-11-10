@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\SiteController;
 use App\Http\Controllers\Api\SiteMoveController;
 use App\Http\Controllers\Api\StatsApiController;
 use App\Http\Controllers\Api\StatsController;
+use App\Http\Controllers\Api\SupportSessionController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\TwoFactorController;
 use App\Http\Controllers\Api\UpdateController;
@@ -97,6 +98,8 @@ Route::middleware('api.auth')->group(function () {
     Route::post('/me/keys', [AuthController::class, 'createKey']);
     Route::delete('/me/keys/{id}', [AuthController::class, 'deleteKey']);
 
+    Route::get('/me/support-sessions', [SupportSessionController::class, 'index']);
+    Route::post('/support/end', [SupportSessionController::class, 'end']);
     Route::post('/me/avatar', [ImageController::class, 'uploadAvatar']);
     Route::delete('/me/avatar', [ImageController::class, 'deleteAvatar']);
     Route::get('/avatars/users/{user}', [ImageController::class, 'showUser']);

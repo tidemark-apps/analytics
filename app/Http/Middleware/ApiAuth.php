@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\ApiKey;
+use App\Support\SupportGuard;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,9 @@ class ApiAuth
         }
 
         if (Auth::guard('web')->check()) {
+            if ($refusal = SupportGuard::refuse($request)) {
+                return $refusal;
+            }
             Auth::shouldUse('web');
         } elseif ($mode === 'required') {
             return response()->json(['error' => 'Unauthenticated'], 401);
