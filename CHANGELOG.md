@@ -6,6 +6,7 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ### Changed
 - The Documentation links in the app open the Tidemark help center (account.hellotidemark.com/kb), where the docs moved. The old addresses keep redirecting.
+- Locked features no longer say "Pro". Notices, badges and API errors now say a feature isn't included in your plan, and the Upgrade links lead to where plans are changed.
 
 ## [0.38.5] - 2026-11-10
 

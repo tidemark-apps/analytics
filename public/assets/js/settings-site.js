@@ -1,6 +1,6 @@
 // Site settings: tracking, conversions, sharing and access, data.
 import { html, useState, useEffect, useRef, useApi, api, navigate, Link, Icon, toast, copy, UserCtx, useContext, useDocTitle, countryName, flag, BASE } from './lib.js';
-import { Loading, Empty, Section, ErrorBox, Field, Confirm, TypedConfirm, Toggle, CodeBlock, Avatar } from './ui.js';
+import { Loading, Empty, Section, ErrorBox, Field, Confirm, TypedConfirm, Toggle, CodeBlock, Avatar, UpgradeLink } from './ui.js';
 import { Snippet } from './dashboard.js';
 import { useScope, organizationsOn } from './org.js';
 import { brandTheme } from './brand.js';
@@ -386,7 +386,7 @@ function Goals({ site }) {
           <button class="btn primary">Add goal</button>
         </div>
       </form>
-      ${!revenue && html`<div class="notice"><${Icon} name="info" size=${16} /><div>Revenue reporting is included with Pro. <${Link} to="/settings">Open your account settings<//> to upgrade.</div></div>`}
+      ${!revenue && html`<div class="notice"><${Icon} name="info" size=${16} /><div>Revenue reporting isn’t included in your plan. <${UpgradeLink} to="/settings/billing">Change your plan<//> to turn it on.</div></div>`}
       ${err && html`<div class="alert">${err}</div>`}
       ${res.data && goals.length === 0 && html`<div class="empty-inline"><${Icon} name="target" size=${18} /><div><b>No goals yet</b><span>Add the first one above. Outbound links, downloads and forms add their own when you turn them on under Tracking.</span></div></div>`}
       ${goals.length > 0 && html`<ul class="rows" aria-label="Goals">${goals.map((g) => html`<li class="rowitem">

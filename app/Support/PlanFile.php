@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
  * The host rewrites the file to change the plan or to pause the install, and the change applies on the next request: nothing restarts.
  * Every key is optional and a missing one means "no limit", so a file that is empty or unreadable never locks anyone out.
  *
- * {"name":"Pro","suspended":false,"expires_at":null,"sites":0,"events_per_month":0,"hard_limit":true,
+ * {"name":"Starter","suspended":false,"expires_at":null,"sites":0,"events_per_month":0,"hard_limit":true,
  *  "features":{"alerts":true,"branding":true,"funnels":true,"revenue":true,"segments":true,"journeys":true,"campaign_links":true,"rollups":true},
  *  "enforce_pii_scrubbing":false}
  *
