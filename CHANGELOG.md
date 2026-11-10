@@ -4,6 +4,9 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+### Added
+- `TIDEMARK_PORTAL_URL`: a host that runs Tidemark for other people can point to the customer's account page. When set, the sidebar gets a Your account section (Client portal, Support tickets) and the Help menu gets Contact support and Client portal. Left empty, nothing is shown.
+
 ### Changed
 - The Documentation links in the app open the Tidemark help center (account.hellotidemark.com/kb), where the docs moved. The old addresses keep redirecting.
 - Locked features no longer say "Pro". Notices, badges and API errors now say a feature isn't included in your plan, and the Upgrade links lead to where plans are changed.

@@ -25,6 +25,7 @@
             legal: @json((object) array_filter(config('tidemark.legal', []))),
             brandUrl: @json(config('tidemark.brand_url')),
             upgradeUrl: @json(config('tidemark.upgrade_url')),
+            portalUrl: @json(config('tidemark.portal_url')),
             icons: @json(@filemtime(public_path('assets/icons.svg'))),
         };
     </script>

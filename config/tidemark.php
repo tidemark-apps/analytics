@@ -105,6 +105,10 @@ return [
     // its own page; left empty, they stay inside the app.
     'upgrade_url' => env('TIDEMARK_UPGRADE_URL'),
 
+    // The customer's account page on the host that runs this install (invoices, plan, support tickets). When set, the sidebar and the Help
+    // menu link to it and to its support tickets at {url}/tickets. Left empty, those links are not shown.
+    'portal_url' => env('TIDEMARK_PORTAL_URL'),
+
     // Links to your legal pages. When set, the sign-in and sign-up screens show them, and sign-up says that creating an account
     // means agreeing to the terms. (A hosted service typically needs all three; self-hosters can leave them empty.)
     'legal' => [
