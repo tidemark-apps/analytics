@@ -4,6 +4,8 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+## [0.38.4] - 2026-11-09
+
 ### Added
 - A host that runs Tidemark for other people can end a trial: set `expires_at` in the plan file (`TIDEMARK_PLAN_FILE`) and from that moment the install records nothing and adds no sites, while everything already collected stays readable. A red banner tells the signed-in person the trial has ended. `php artisan tidemark:usage` reports `expires_at` and `expired`. Without the key nothing ever expires.
 
