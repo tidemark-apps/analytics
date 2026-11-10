@@ -83,7 +83,7 @@ class RollupController extends Controller
     /** The organization a rollup is made in: one the person owns or administers (their Personal one by default). */
     private function organizationFor($user, ?string $id): Organization
     {
-        $org = $id ? Organization::whereKey($id)->whereIn('id', Organization::idsFor($user))->first() : Organization::personalFor($user);
+        $org = $id && config('tidemark.organizations') ? Organization::whereKey($id)->whereIn('id', Organization::idsFor($user))->first() : Organization::personalFor($user);
         if (! $org) {
             throw ValidationException::withMessages(['organization' => 'You are not an owner or admin of that organization.']);
         }

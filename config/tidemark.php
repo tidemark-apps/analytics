@@ -77,6 +77,21 @@ return [
     // E-mail invitations: sharing a site with an address that has no account sends an invitation instead of failing. Off by default
     // on self-hosted installs (accounts are then created by an administrator); on for Cloud. Needs working mail settings.
     'invites' => (bool) env('TIDEMARK_INVITES', env('TIDEMARK_MODE', 'self-hosted') === 'cloud'),
+    // Set by a host that runs this install for someone else (TIDEMARK_HOSTED=true, as in the Docker image's hosted mode): settings that live
+    // in the environment, such as outgoing email, are the host's to manage, and the app says so instead of pointing at the .env file.
+    'hosted' => filter_var(env('TIDEMARK_HOSTED', false), FILTER_VALIDATE_BOOLEAN),
+    // A JSON file that sets this install's plan (limits, paused or not, which features are on); see App\Support\PlanFile. Unset means no limits.
+    'plan_file' => env('TIDEMARK_PLAN_FILE'),
+
+    // The public key (base64, Ed25519) of the service that hosts this install. It lets that service send customers straight in from its
+    // portal and open support sessions; see App\Support\HostToken. Unset turns both off.
+    'sso_public_key' => env('TIDEMARK_SSO_PUBLIC_KEY'),
+    // Whether the host's support may open read-only sessions on this install (the owner sees each one in Settings → Security).
+    'support_access' => (bool) env('TIDEMARK_SUPPORT_ACCESS', true),
+
+    // Organizations, teams and moving sites between them. Turn off for an install that serves one customer: everyone keeps their
+    // Personal organization behind the scenes and sites are shared with people one by one.
+    'organizations' => (bool) env('TIDEMARK_ORGANIZATIONS', true),
     // How many organizations (besides Personal) one person may own.
     'organization_limit' => (int) env('TIDEMARK_ORGANIZATION_LIMIT', 10),
     'invite_hours' => (int) env('TIDEMARK_INVITE_HOURS', 72),

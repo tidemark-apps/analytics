@@ -62,6 +62,27 @@ function VerifyBanner({ user }) {
     ${!sent && html`<button class="btn sm" onClick=${async () => { await api('/auth/verification-notification', { method: 'POST' }); setSent(true); }}>Resend email</button>`}</div>`;
 }
 
+/** Shown while the plan has stopped recording: the account is paused, or this month's events are used up. */
+function PlanBanner({ user }) {
+  const p = user.plan;
+  if (!p || !p.stopped) return null;
+  const text = p.stopped === 'paused'
+    ? 'This account is paused, so new visits are not being recorded. Contact support to restore it.'
+    : 'Your plan\'s ' + Number(p.events_included).toLocaleString() + ' events for this month are used up, so new visits are not being recorded'
+      + (p.resumes_on ? ' until ' + new Date(p.resumes_on + 'T00:00:00Z').toLocaleDateString([], { month: 'long', day: 'numeric', timeZone: 'UTC' }) : '') + '. Upgrade your plan to keep recording.';
+  return html`<div class="banner danger" role="status"><${Icon} name="info" size=${15} /><span>${text}</span></div>`;
+}
+
+/** Shown for as long as someone from the host is looking at the account: who, until when, and a way to end it. */
+function SupportBanner({ user }) {
+  const s = user.support;
+  if (!s || !s.open) return null;
+  const until = new Date(s.ends_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  const end = async () => { try { await api('/support/end', { method: 'POST' }); } finally { window.location.assign((window.SD.base || '') + '/login'); } };
+  return html`<div class="banner danger" role="status"><${Icon} name="eye" size=${15} /><span><b>${s.staff_name}</b> from support is looking at this account until ${until}. They can look, but not change anything.</span>
+    <button class="btn sm" onClick=${end}>End session</button></div>`;
+}
+
 function App() {
   const { path } = useLocation();
   const [user, setUser] = useState(undefined);
@@ -110,6 +131,8 @@ function App() {
       <div class="app-body">
         ${shell && html`<${Sidebar} user=${user} path=${path} sites=${sites} side=${side} />`}
         <div class="app-main">
+          ${user && html`<${SupportBanner} user=${user} />`}
+          ${user && html`<${PlanBanner} user=${user} />`}
           ${user && html`<${VerifyBanner} user=${user} />`}
           ${user && registry.banners.map((B) => html`<${B} user=${user} />`)}
           ${Page ? html`<${Page} ...${m.params} />` : notFound}

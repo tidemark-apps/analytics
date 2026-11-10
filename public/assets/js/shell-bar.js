@@ -1,7 +1,7 @@
 // Shell: Top bar: account and help menus, organization and site switchers, live visitors.
 import { html, useState, useEffect, useMemo, useRef, useApi, api, navigate, Link, Icon, fmt, BASE, UserCtx, useContext, setTheme, currentTheme, countryName, flag } from './lib.js';
 import { Pop, Sheet, FavTile, Modal, Field, Avatar } from './ui.js';
-import { useScope } from './org.js';
+import { useScope, organizationsOn } from './org.js';
 import { Logo } from './logo.js';
 import { registry, pathAfterOrganizationCreated, badgeOf, badgeText, useBadgeCounts } from './extensions.js';
 import { SITE_NAV, modKey, openPalette, openShortcuts, siteFromPath } from './shell-nav.js';
@@ -55,7 +55,7 @@ export function OrgSwitcher({ user }) {
     document.addEventListener('mousedown', out); document.addEventListener('keydown', key);
     return () => { document.removeEventListener('mousedown', out); document.removeEventListener('keydown', key); };
   }, [open]);
-  if (!scope.orgs.length) return null;
+  if (scope.flat || !scope.orgs.length) return null;
   const pick = (id) => { setOpen(false); scope.set(id); if (location.pathname !== '/sites' && !location.pathname.startsWith('/settings')) navigate('/sites'); };
   const label = scope.shared ? 'Shared with me' : scope.org.personal ? 'Personal' : scope.org.name;
   const tile = (name, url) => html`<${Avatar} name=${name} url=${url} size="sm" shape="org" />`;
@@ -105,7 +105,7 @@ function SiteSwitcher({ list, current, domain, recents, user, scopeId }) {
   const query = q.trim().toLowerCase();
   const orgs = (user && user.organizations) || [];
   // which organization a site belongs to, for the label next to it and for grouping; sites of other people's organizations are "Shared with me"
-  const orgOf = (s) => { const o = orgs.find((x) => x.id === s.organization_id); return o ? { id: o.id, name: o.personal ? 'Personal' : o.name } : { id: 'shared', name: 'Shared with me' }; };
+  const orgOf = (s) => { const o = orgs.find((x) => x.id === s.organization_id); return o ? { id: o.id, name: o.personal ? (organizationsOn() ? 'Personal' : 'Your sites') : o.name } : { id: 'shared', name: 'Shared with me' }; };
   const groups = useMemo(() => {
     if (query) return [['Results', list.filter((s) => s.domain.toLowerCase().includes(query))]];
     const byDomain = Object.fromEntries(list.map((s) => [s.domain, s]));
@@ -206,7 +206,7 @@ export function AppBar({ user, path, sites, side }) {
     <${Link} to="/sites" class="brand-mark" aria-label="Tidemark Analytics, all sites"><${Logo} size=${24} /><//>
     <nav class=${'crumbs' + (domain ? ' on-site' : '')} aria-label="Breadcrumb">
       <span class="crumb-sep" aria-hidden="true">/</span>
-      <${OrgSwitcher} user=${user} /><span class="crumb-sep" aria-hidden="true">/</span>
+      ${!scope.flat && scope.orgs.length > 0 && html`<${OrgSwitcher} user=${user} /><span class="crumb-sep" aria-hidden="true">/</span>`}
       ${domain ? html`<${SiteSwitcher} list=${sites.list} current=${current} domain=${domain} recents=${recents} user=${user} scopeId=${scope.id} /><span class="crumb-sep s2" aria-hidden="true">/</span><span class="crumb-cur muted sec" aria-current="page">${sectionLabel(path, domain)}</span>`
         : html`<span class="crumb-cur" aria-current="page">${sectionLabel(path, domain)}</span>`}
     </nav>

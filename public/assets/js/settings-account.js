@@ -67,7 +67,7 @@ function EmailReports() {
     setBusy(null);
   };
   return html`<${Section} title="Email reports" help="A short summary of each site: visitors, pageviews, top pages, sources and countries, goals and the notes on your graph, compared with the period before. Weekly reports arrive on Monday morning and monthly ones on the 1st, at 08:00 in each site's timezone.">
-      ${res.data && !res.data.mail && html`<div class="alert">This installation can't send email yet. Reports will start going out once outgoing email is set up (see MAIL_MAILER in the environment file).</div>`}
+      ${res.data && !res.data.mail && html`<div class="alert">${window.SD && window.SD.hosted ? "Email reports are paused: this account can't send email right now. Contact support if it doesn't come back soon." : "This installation can't send email yet. Reports will start going out once outgoing email is set up (see MAIL_MAILER in the environment file)."}</div>`}
       ${res.loading && !res.data ? html`<p class="muted">Loading…</p>` : sites.length === 0 ? html`<p class="muted">You don't have any sites yet.</p>`
         : html`<div class="rows">${sites.map((s) => html`<div class="rowitem boxed" key=${s.id}><span class="ri-ico" aria-hidden="true"><${Icon} name="mail" size=${16} /></span>
           <div class="grow ri-main"><b>${s.domain}</b><span class="muted">${s.frequency === 'weekly' ? 'Every Monday' : s.frequency === 'monthly' ? 'On the 1st of each month' : 'No email'}</span></div>
@@ -185,7 +185,22 @@ function Security() {
           <${Field} label="Confirm new password"><input type="password" required autocomplete="new-password" value=${pw.password_confirmation} onInput=${(e) => setPw({ ...pw, password_confirmation: e.target.value })} /><//></div>
       <//></form>
     <${TwoFactor} />
+    <${SupportAccess} />
 `;
+}
+
+/** Security → Support access: each time someone from the host looked at this account, and why. Only where the host can do that. */
+function SupportAccess() {
+  const { user } = useContext(UserCtx);
+  const res = useApi('/me/support-sessions', null, []);
+  if (!user.support_access) return null;
+  const rows = (res.data && res.data.data) || [];
+  return html`<${Section} title="Support access" help="When someone from support looks at your account to help you, it is listed here with who it was and why. They can look, but not change anything, and a session ends by itself within an hour.">
+    ${res.data && !rows.length && html`<div class="empty-inline"><${Icon} name="shield-check" size=${18} /><div><b>No one has looked at your account</b><span>Support sessions will appear here.</span></div></div>`}
+    ${rows.length > 0 && html`<ul class="rows" aria-label="Support sessions">${rows.map((r) => html`<li class="rowitem">
+      <span class="ri-ico" aria-hidden="true"><${Icon} name="users" size=${16} /></span>
+      <div class="grow ri-main"><b class="trunc">${r.staff_name}</b><span class="muted">${r.reason || 'No reason given'}${r.ticket ? ' · ' + r.ticket : ''} · ${ago(r.started_at.replace('T', ' ').slice(0, 19))}${r.open ? ' · open now' : ''}</span></div></li>`)}</ul>`}
+  <//>`;
 }
 
 export function ApiKeys() {

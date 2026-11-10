@@ -8,7 +8,11 @@ use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\Site;
 use App\Models\User;
+use App\Support\HostToken;
+use App\Support\MonthlyEvents;
+use App\Support\PlanFile;
 use App\Support\SecondFactor;
+use App\Support\SupportGuard;
 use App\Updates\Updater;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
@@ -126,6 +130,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        SupportGuard::current($request)?->end();
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -208,11 +213,33 @@ class AuthController extends Controller
             'timezone' => $u->timezone, 'locale' => $u->locale, 'two_factor' => $u->hasTwoFactor(),
             'email_verified' => $u->hasVerifiedEmail(), 'verification_required' => (bool) config('tidemark.verify_email'),
             'updater_enabled' => (bool) config('tidemark.updater'),
+            'plan' => $this->plan(),
+            'support' => SupportGuard::current(request())?->present(),
+            'support_access' => HostToken::enabled() && config('tidemark.support_access'),
             'can_rollup' => Site::rollupsAllowedFor($u),
             // organizations this person owns or administers, for the choice when adding a site or a team
-            'organizations' => Organization::whereIn('id', Organization::idsFor($u))->orderByDesc('personal')->orderBy('name')->get()->map(fn ($o) => ['id' => $o->id, 'name' => $o->name, 'personal' => $o->personal, 'logo_url' => $o->logoUrl(), 'role' => $o->owner_id === $u->id ? 'owner' : 'admin', 'can_rollup' => Site::rollupsAllowedFor($u, $o)])->values(),
+            'organizations' => Organization::whereIn('id', Organization::idsFor($u))->when(! config('tidemark.organizations'), fn ($q) => $q->where('personal', true))->orderByDesc('personal')->orderBy('name')->get()->map(fn ($o) => ['id' => $o->id, 'name' => $o->name, 'personal' => $o->personal, 'logo_url' => $o->logoUrl(), 'role' => $o->owner_id === $u->id ? 'owner' : 'admin', 'can_rollup' => Site::rollupsAllowedFor($u, $o)])->values(),
             // sites of other people's organizations this person can open (shown under "Shared with me")
             'shared_sites' => Site::where('kind', '!=', 'rollup')->memberOf($u)->where(fn ($q) => $q->whereNull('organization_id')->orWhereNotIn('organization_id', Organization::idsFor($u)))->exists(),
+        ];
+    }
+
+    /** Whether the host's plan has stopped recording, and why; null on an install with no plan file, which is never limited. */
+    private function plan(): ?array
+    {
+        if (! config('tidemark.plan_file')) {
+            return null;
+        }
+        $included = PlanFile::eventsPerMonth();
+        $events = $included > 0 && PlanFile::hardLimit() ? MonthlyEvents::current() : null;
+        $paused = PlanFile::suspended();
+        $full = $events !== null && $events >= $included;
+
+        return [
+            'name' => PlanFile::name(),
+            'stopped' => $paused ? 'paused' : ($full ? 'limit' : null),
+            'events_included' => $included ?: null,
+            'resumes_on' => $full && ! $paused ? gmdate('Y-m-d', strtotime('first day of next month')) : null,
         ];
     }
 }

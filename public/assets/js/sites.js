@@ -1,7 +1,7 @@
 import { html, useState, useEffect, useMemo, useApi, api, navigate, Link, Icon, toast, fmtShort, useDocTitle, UserCtx, useContext, BASE, useLocation, setQuery } from './lib.js';
 import { Loading, Empty, Field, ErrorBox, Sparkline, Toggle, Pop, FavTile, Badge, SettingCard, Segmented, Breadcrumb, Notice } from './ui.js';
 import { Snippet } from './dashboard.js';
-import { useScope } from './org.js';
+import { useScope, organizationsOn } from './org.js';
 
 const VIEW_KEY = 'tidemark.sitesView';
 const readView = () => { try { return localStorage.getItem(VIEW_KEY) === 'list' ? 'list' : 'grid'; } catch (e) { return 'grid'; } };
@@ -37,7 +37,7 @@ export function SitesPage() {
   useDocTitle('Sites');
   const { user } = useContext(UserCtx) || {};
   const scope = useScope(user);
-  const res = useApi('/sites', scope.id ? { organization: scope.id } : null, [scope.id]);
+  const res = useApi('/sites', scope.id && !scope.flat ? { organization: scope.id } : null, [scope.id, scope.flat]);
   const { query } = useLocation();
   const [q, setQ] = useState('');
   const [sort, setSort] = useState('visitors');
@@ -146,12 +146,12 @@ export function NewRollup() {
   };
   return html`<main class="main narrow"><header class="page-head"><div class="grow"><${Breadcrumb} items=${[{ label: 'Sites', to: '/sites' }, { label: 'New rollup' }]} /><h1 style="margin-top:8px">Create a rollup</h1><div class="sub">One dashboard that adds up several sites of ${org && !org.personal ? org.name : 'your Personal organization'}. The sites keep their own dashboards and data.</div></div></header>
     <form onSubmit=${submit}><${SettingCard} title="Rollup" help="Imported data is left out, and a revenue goal adds up only amounts sent in its own currency. The rollup's timezone starts as the one most of its sites use."
-      footer=${html`<span class="help">${all ? 'Includes every site in the organization, now and later.' : `${chosen.length} ${chosen.length === 1 ? 'site' : 'sites'} selected.`}</span><div class="row"><${Link} to="/sites" class="btn ghost">Cancel<//><button class="btn primary" disabled=${busy || !name || !allowed || (!all && !chosen.length)}>${busy ? 'Creating…' : 'Create rollup'}</button></div>`}>
+      footer=${html`<span class="help">${all ? (organizationsOn() ? 'Includes every site in the organization, now and later.' : 'Includes every site you own, now and later.') : `${chosen.length} ${chosen.length === 1 ? 'site' : 'sites'} selected.`}</span><div class="row"><${Link} to="/sites" class="btn ghost">Cancel<//><button class="btn primary" disabled=${busy || !name || !allowed || (!all && !chosen.length)}>${busy ? 'Creating…' : 'Create rollup'}</button></div>`}>
       ${!allowed && html`<div class="notice"><${Icon} name="info" size=${16} /><div>Rollups are included with Pro. <${Link} to="/settings">Open your account settings<//> to upgrade.</div></div>`}
       ${err && html`<div class="alert" role="alert"><${Icon} name="circle-alert" size=${16} /><div>${err}</div></div>`}
       <${Field} label="Name" help="Letters, numbers and hyphens, like all-sites. It becomes the dashboard's address."><input required autofocus placeholder="all-sites" value=${name} onInput=${(e) => setName(e.target.value)} autocapitalize="off" spellcheck="false" maxlength="63" /><//>
       <fieldset class="fieldset"><legend class="lbl">Sites</legend>
-        <div class="stack sm"><label class="row"><input type="radio" name="scope" checked=${all} onChange=${() => setAll(true)} /> <span><b>All the sites in this organization</b>, including ones added later</span></label>
+        <div class="stack sm"><label class="row"><input type="radio" name="scope" checked=${all} onChange=${() => setAll(true)} /> <span><b>${organizationsOn() ? 'All the sites in this organization' : 'All your sites'}</b>, including ones added later</span></label>
           <label class="row"><input type="radio" name="scope" checked=${!all} onChange=${() => setAll(false)} /> <span>Only the sites I choose</span></label></div></fieldset>
       ${!all && html`<div class="stack sm" role="group" aria-label="Sites in this rollup">${list.map((s) => html`<label class="row"><input type="checkbox" checked=${chosen.includes(s.domain)} onChange=${(e) => setChosen(e.target.checked ? [...chosen, s.domain] : chosen.filter((d) => d !== s.domain))} /> <span>${s.domain}</span></label>`)}</div>`}
     <//></form></main>`;

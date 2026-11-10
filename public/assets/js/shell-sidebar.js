@@ -20,7 +20,7 @@ export function Sidebar({ user, path, sites, side }) {
   const current = domain && all.find((s) => s.domain === domain);
   // the counts are for the organization chosen in the switcher, like the Sites page
   const mineIds = (user.organizations || []).map((o) => o.id);
-  const list = all.filter((s) => (scope.shared ? !mineIds.includes(s.organization_id) && !s.rollup : s.organization_id === scope.id));
+  const list = scope.flat ? all : all.filter((s) => (scope.shared ? !mineIds.includes(s.organization_id) && !s.rollup : s.organization_id === scope.id));
   const canManage = !current || current.role === 'owner' || current.role === 'admin';
   const hasRollups = list.some((s) => s.rollup);
   const tabs = accountTabs(user);
