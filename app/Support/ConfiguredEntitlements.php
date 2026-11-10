@@ -22,6 +22,9 @@ class ConfiguredEntitlements implements AllowsAlerts, AllowsBranding, AllowsCamp
 {
     public function canCreateSite(User $user): true|string
     {
+        if (PlanFile::expired()) {
+            return 'Your trial has ended. Choose a plan to add sites.';
+        }
         if (PlanFile::suspended()) {
             return 'This account is suspended. Contact support to restore it.';
         }
@@ -35,7 +38,7 @@ class ConfiguredEntitlements implements AllowsAlerts, AllowsBranding, AllowsCamp
 
     public function allowsRecording(array $site): bool
     {
-        if (PlanFile::suspended()) {
+        if (PlanFile::stopped()) {
             return false;
         }
         $allowed = PlanFile::eventsPerMonth();

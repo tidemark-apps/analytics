@@ -62,13 +62,15 @@ function VerifyBanner({ user }) {
     ${!sent && html`<button class="btn sm" onClick=${async () => { await api('/auth/verification-notification', { method: 'POST' }); setSent(true); }}>Resend email</button>`}</div>`;
 }
 
-/** Shown while the plan has stopped recording: the account is paused, or this month's events are used up. */
+/** Shown while the plan has stopped recording: the account is paused, the trial has ended, or this month's events are used up. */
 function PlanBanner({ user }) {
   const p = user.plan;
   if (!p || !p.stopped) return null;
   const text = p.stopped === 'paused'
     ? 'This account is paused, so new visits are not being recorded. Contact support to restore it.'
-    : 'Your plan\'s ' + Number(p.events_included).toLocaleString() + ' events for this month are used up, so new visits are not being recorded'
+    : p.stopped === 'expired'
+      ? 'Your trial has ended, so new visits are not being recorded. Your data is still here to look at. Choose a plan to start recording again.'
+      : 'Your plan\'s ' + Number(p.events_included).toLocaleString() + ' events for this month are used up, so new visits are not being recorded'
       + (p.resumes_on ? ' until ' + new Date(p.resumes_on + 'T00:00:00Z').toLocaleDateString([], { month: 'long', day: 'numeric', timeZone: 'UTC' }) : '') + '. Upgrade your plan to keep recording.';
   return html`<div class="banner danger" role="status"><${Icon} name="info" size=${15} /><span>${text}</span></div>`;
 }
