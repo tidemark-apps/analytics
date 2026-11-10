@@ -77,6 +77,9 @@ return [
     // E-mail invitations: sharing a site with an address that has no account sends an invitation instead of failing. Off by default
     // on self-hosted installs (accounts are then created by an administrator); on for Cloud. Needs working mail settings.
     'invites' => (bool) env('TIDEMARK_INVITES', env('TIDEMARK_MODE', 'self-hosted') === 'cloud'),
+    // Set by a host that runs this install for someone else (TIDEMARK_HOSTED=true, as in the Docker image's hosted mode): settings that live
+    // in the environment, such as outgoing email, are the host's to manage, and the app says so instead of pointing at the .env file.
+    'hosted' => filter_var(env('TIDEMARK_HOSTED', false), FILTER_VALIDATE_BOOLEAN),
     // A JSON file that sets this install's plan (limits, paused or not, which features are on); see App\Support\PlanFile. Unset means no limits.
     'plan_file' => env('TIDEMARK_PLAN_FILE'),
 

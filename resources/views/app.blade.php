@@ -20,6 +20,7 @@
             registration: @json((bool) config('tidemark.registration')),
             mode: @json(config('tidemark.mode')),
             organizations: @json((bool) config('tidemark.organizations')),
+            hosted: @json((bool) config('tidemark.hosted')),
             extensions: @json(array_values(config('tidemark.extensions', []))),
             legal: @json((object) array_filter(config('tidemark.legal', []))),
             brandUrl: @json(config('tidemark.brand_url')),

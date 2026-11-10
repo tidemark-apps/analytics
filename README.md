@@ -149,6 +149,7 @@ Logo (pictorial mark: pier pilings with a tide line across them), palette, typog
 | `TIDEMARK_PLAN_FILE` | *(unset)* | Path to a JSON file that sets the install's plan: site and monthly event limits, which features are on, paused or not. For a host that runs Tidemark for others; unset means no limits |
 | `TIDEMARK_SSO_PUBLIC_KEY` | *(unset)* | Base64 Ed25519 public key. When set, `/sso` accepts short-lived signed sign-in links from the host (customer or support). For a host that runs Tidemark for others |
 | `TIDEMARK_SUPPORT_ACCESS` | `true` | Set to `false` to refuse support sign-in links. Support sessions are read-only, time-limited and listed under Security → Support access |
+| `TIDEMARK_HOSTED` | `false` | Set to `true` when a host runs the install for someone else (also keeps the settings file readable by its owner only in the Docker image). The app then points people at their host instead of the environment file |
 | `TIDEMARK_INGEST` | `sync` | `queue` buffers writes; drained by `schedule:run` or a worker |
 | `TIDEMARK_ANALYTICS_DB` | *(app DB)* | Separate connection for `visits`, `events` and `event_props` |
 | `TIDEMARK_IGNORE_IP`, `TIDEMARK_HOSTNAMES` | – | Comma-separated lists |
