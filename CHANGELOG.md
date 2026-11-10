@@ -4,10 +4,13 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+## [0.38.2] - 2026-11-09
+
 ### Added
 - The Docker image can run with a read-only root filesystem, for hosts that run many installs side by side. Mount `/data` as a volume, `/config`, `/tmp` and `/app/bootstrap/cache` as tmpfs, and set `TIDEMARK_HOSTED=true`, which also keeps the settings file readable by its owner only. Nothing changes if you don't.
 
 ### Changed
+- The Documentation and Community links in the app, the "Analytics by" link on public dashboards and the links in the README now point to hellotidemark.com and community.hellotidemark.com.
 - The Docker image starts with a small init process (tini) so stray child processes are cleaned up, and the paths the app writes to are linked into `/data` when the image is built.
 
 ### Fixed
