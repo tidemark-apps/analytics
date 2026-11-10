@@ -284,8 +284,8 @@ function SegmentControl({ site, scope, segs, locked, onSave, onManage }) {
   const label = locked ? 'Segment' : current ? current.name : active ? 'Segment' : 'All visitors';
   const filtersNow = scope.filters.some((r) => r[1] !== 'segment');
   const choose = (id, close) => { setFilters([...parseFilters(scope.query).filter((r) => r[1] !== 'segment'), ...(id ? [['is', 'segment', [id]]] : [])]); close(); };
-  return html`<${Pop} align="left" ariaLabel=${'Segment: ' + label} btnClass=${'btn sb-segment' + (active ? ' on' : '')} label=${html`<${Icon} name=${locked ? 'lock' : 'users'} size=${14} /><span class="sb-val">${label}</span>${locked && html`<span class="badge outline">Pro</span>`}<${Icon} name="chevron-down" size=${13} class="muted" />`}>
-    ${(close) => (locked ? html`<div class="sb-lock"><span class="prolock-ico" aria-hidden="true"><${Icon} name="lock" size=${18} /></span><b>Segments are a Pro feature</b>
+  return html`<${Pop} align="left" ariaLabel=${'Segment: ' + label} btnClass=${'btn sb-segment' + (active ? ' on' : '')} label=${html`<${Icon} name=${locked ? 'lock' : 'users'} size=${14} /><span class="sb-val">${label}</span>${locked && html`<span class="badge outline">Not in plan</span>`}<${Icon} name="chevron-down" size=${13} class="muted" />`}>
+    ${(close) => (locked ? html`<div class="sb-lock"><span class="prolock-ico" aria-hidden="true"><${Icon} name="lock" size=${18} /></span><b>Segments aren’t in your plan</b>
         <p class="muted small">Save any set of filters, like “visitors from Germany on mobile”, and switch between them in one click.</p>
         ${site.can_manage && html`<${UpgradeLink} to=${billingPath()} class="btn primary sm" onClick=${close}>Upgrade to unlock<//>`}</div>`
       : html`<div style="min-width:240px">

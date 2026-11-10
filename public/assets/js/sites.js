@@ -1,5 +1,5 @@
 import { html, useState, useEffect, useMemo, useApi, api, navigate, Link, Icon, toast, fmtShort, useDocTitle, UserCtx, useContext, BASE, useLocation, setQuery } from './lib.js';
-import { Loading, Empty, Field, ErrorBox, Sparkline, Toggle, Pop, FavTile, Badge, SettingCard, Segmented, Breadcrumb, Notice } from './ui.js';
+import { Loading, Empty, Field, ErrorBox, Sparkline, Toggle, Pop, FavTile, Badge, SettingCard, Segmented, Breadcrumb, Notice, UpgradeLink } from './ui.js';
 import { Snippet } from './dashboard.js';
 import { useScope, organizationsOn } from './org.js';
 
@@ -63,7 +63,7 @@ export function SitesPage() {
       <div class="split"><${Link} to="/sites/new" class="btn primary"><${Icon} name="plus" size=${14} /> New site<//>
         <${Pop} align="right" ariaLabel="More ways to add" btnClass="btn primary" label=${html`<${Icon} name="chevron-down" size=${14} />`}>${(close) => html`<div style="min-width:240px">
           <${Link} to="/sites/new" class="item" onClick=${close}><span>Site</span><${Icon} name="globe" size=${14} /><//>
-          ${canRollup ? html`<${Link} to="/sites/rollup" class="item" onClick=${close}><span>Rollup</span><${Icon} name="layers" size=${14} /><//>` : html`<span class="item" aria-disabled="true" style="opacity:.55;cursor:not-allowed"><span>Rollup</span><span class="muted small">${user && user.can_rollup === false ? 'Pro' : 'Needs 2 sites'}</span></span>`}
+          ${canRollup ? html`<${Link} to="/sites/rollup" class="item" onClick=${close}><span>Rollup</span><${Icon} name="layers" size=${14} /><//>` : html`<span class="item" aria-disabled="true" style="opacity:.55;cursor:not-allowed"><span>Rollup</span><span class="muted small">${user && user.can_rollup === false ? 'Not in plan' : 'Needs 2 sites'}</span></span>`}
           <${Link} to="/sites/new?import=plausible" class="item" onClick=${close}><span>Import from Plausible</span><${Icon} name="upload" size=${14} /><//></div>`}<//></div></div></header>
     ${res.data && res.data.other_sites && res.data.other_sites.count > 0 && html`<div class="notice other-sites"><${Icon} name="info" size=${16} /><div>These are the sites you belong to. ${res.data.other_sites.count.toLocaleString()} other ${res.data.other_sites.count === 1 ? 'site' : 'sites'} on this installation ${res.data.other_sites.count === 1 ? 'is' : 'are'} listed separately. <a href=${BASE + res.data.other_sites.path}>View them</a></div></div>`}
     ${res.error && !res.data ? html`<${ErrorBox} error=${res.error} />` : res.loading && !res.data ? html`<${SitesSkeleton} />` : total === 0 ? html`<${Empty} title="Add your first site" icon="globe">Tidemark counts visitors without cookies or personal data. Add a site to get a tracking snippet.<${Link} to="/sites/new" class="btn primary" style="margin-top:10px">Add a site<//><//>`
@@ -147,7 +147,7 @@ export function NewRollup() {
   return html`<main class="main narrow"><header class="page-head"><div class="grow"><${Breadcrumb} items=${[{ label: 'Sites', to: '/sites' }, { label: 'New rollup' }]} /><h1 style="margin-top:8px">Create a rollup</h1><div class="sub">One dashboard that adds up several sites of ${org && !org.personal ? org.name : 'your Personal organization'}. The sites keep their own dashboards and data.</div></div></header>
     <form onSubmit=${submit}><${SettingCard} title="Rollup" help="Imported data is left out, and a revenue goal adds up only amounts sent in its own currency. The rollup's timezone starts as the one most of its sites use."
       footer=${html`<span class="help">${all ? (organizationsOn() ? 'Includes every site in the organization, now and later.' : 'Includes every site you own, now and later.') : `${chosen.length} ${chosen.length === 1 ? 'site' : 'sites'} selected.`}</span><div class="row"><${Link} to="/sites" class="btn ghost">Cancel<//><button class="btn primary" disabled=${busy || !name || !allowed || (!all && !chosen.length)}>${busy ? 'Creating…' : 'Create rollup'}</button></div>`}>
-      ${!allowed && html`<div class="notice"><${Icon} name="info" size=${16} /><div>Rollups are included with Pro. <${Link} to="/settings">Open your account settings<//> to upgrade.</div></div>`}
+      ${!allowed && html`<div class="notice"><${Icon} name="info" size=${16} /><div>Rollups aren’t included in your plan. <${UpgradeLink} to="/settings/billing">Change your plan<//> to turn them on.</div></div>`}
       ${err && html`<div class="alert" role="alert"><${Icon} name="circle-alert" size=${16} /><div>${err}</div></div>`}
       <${Field} label="Name" help="Letters, numbers and hyphens, like all-sites. It becomes the dashboard's address."><input required autofocus placeholder="all-sites" value=${name} onInput=${(e) => setName(e.target.value)} autocapitalize="off" spellcheck="false" maxlength="63" /><//>
       <fieldset class="fieldset"><legend class="lbl">Sites</legend>

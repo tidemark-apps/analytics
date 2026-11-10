@@ -30,7 +30,7 @@ class RollupController extends Controller
         $data = $r->validate(['name' => 'required|string|max:63', 'organization' => 'nullable|string', 'timezone' => 'nullable|string|max:64', 'all' => 'sometimes|boolean', 'sites' => 'sometimes|array|max:500', 'sites.*' => 'string']);
         $org = $this->organizationFor($user, $data['organization'] ?? null);
         if (! Site::rollupsAllowedFor($user, $org)) {
-            return response()->json(['error' => 'rollups_unavailable', 'message' => 'Rollups are included with Pro.'], 403);
+            return response()->json(['error' => 'rollups_unavailable', 'message' => 'Rollups aren’t included in your plan.'], 403);
         }
         $name = strtolower(trim($data['name']));
         if (! preg_match('/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/', $name)) {
