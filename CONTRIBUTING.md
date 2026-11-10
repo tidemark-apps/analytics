@@ -2,7 +2,7 @@
 
 Thanks for helping! Tidemark Analytics aims to stay small: one clear dashboard, easy installs on shared hosting, and no personal data collected. Changes that fit that spirit are very welcome.
 
-Want to talk something through first? Join the [Tidemark community](https://community.tidemarkanalytics.com) and start a thread there.
+Want to talk something through first? Join the [Tidemark community](https://community.hellotidemark.com) and start a thread there.
 
 ## Getting started
 

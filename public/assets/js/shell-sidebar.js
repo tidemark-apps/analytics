@@ -52,7 +52,7 @@ export function Sidebar({ user, path, sites, side }) {
       ${registry.menuItems.filter((m) => !m.visible || m.visible(user)).map((m) => (m.onClick
         ? html`<button class="side-link" title=${m.label} onClick=${m.onClick}><${Icon} name=${m.icon || 'life-buoy'} size=${16} /><span>${m.label}</span><${SideBadge} m=${m} /></button>`
         : html`<${SideExt} href=${m.href} icon=${m.icon || 'external-link'} label=${m.label} external=${!!m.external}><${SideBadge} m=${m} /><//>`))}
-      <${SideExt} href="https://community.tidemarkanalytics.com" icon="users" label="Community" />`;
+      <${SideExt} href="https://community.hellotidemark.com" icon="users" label="Community" />`;
   return html`<aside class="side" id="app-side" aria-label="Main">
     <nav class="side-scroll" aria-label=${domain ? 'Site' : 'Workspace'}>
       <div class="side-ctx"><${OrgSwitcher} user=${user} />${domain && html`<${LivePill} domain=${domain} />`}</div>

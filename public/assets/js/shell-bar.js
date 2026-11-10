@@ -38,7 +38,7 @@ function HelpMenu({ user }) {
         ? html`<button class="item" onClick=${() => { close(); m.onClick(); }}><span>${m.label}</span><${BadgeCount} m=${m} /><${Icon} name=${m.icon || 'external-link'} size=${14} /></button>`
         : html`<a class="item" href=${m.href} target=${m.external ? '_blank' : null} rel=${m.external ? 'noopener' : null} onClick=${close}><span>${m.label}</span><${BadgeCount} m=${m} /><${Icon} name=${m.icon || 'external-link'} size=${14} /></a>`))}
       <button class="item" onClick=${() => { close(); openShortcuts(); }}><span>Keyboard shortcuts</span><kbd>?</kbd></button>
-      <a class="item" href="https://community.tidemarkanalytics.com" target="_blank" rel="noopener" onClick=${close}><span>Community</span><${Icon} name="users" size=${14} /></a></div>`}<//>`;
+      <a class="item" href="https://community.hellotidemark.com" target="_blank" rel="noopener" onClick=${close}><span>Community</span><${Icon} name="users" size=${14} /></a></div>`}<//>`;
 }
 
 /** Organization switcher: the organizations you belong to (Personal first), sites shared with you one by one, and a way to create one. */
