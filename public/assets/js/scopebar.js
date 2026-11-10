@@ -1,6 +1,6 @@
 // The scope bar: period, comparison, segment and filters in one sticky bar, with their menus, dialogs and keyboard shortcuts.
 import { html, useState, useEffect, useRef, useApi, api, setQuery, setFilters, parseFilters, Link, Icon, toast, PERIODS, FILTER_OPS, FILTER_DIMS, dimLabel, todayStr, shiftDate, rememberPeriod, fmtShort, countryName, shareAuth, BASE, UserCtx, useContext } from './lib.js';
-import { Pop, Modal, Field, useDebounced } from './ui.js';
+import { Pop, Modal, Field, useDebounced, UpgradeLink } from './ui.js';
 import { registry } from './extensions.js';
 import { stepPeriod, canStep, decodeZoom } from './scope-math.js';
 
@@ -287,7 +287,7 @@ function SegmentControl({ site, scope, segs, locked, onSave, onManage }) {
   return html`<${Pop} align="left" ariaLabel=${'Segment: ' + label} btnClass=${'btn sb-segment' + (active ? ' on' : '')} label=${html`<${Icon} name=${locked ? 'lock' : 'users'} size=${14} /><span class="sb-val">${label}</span>${locked && html`<span class="badge outline">Pro</span>`}<${Icon} name="chevron-down" size=${13} class="muted" />`}>
     ${(close) => (locked ? html`<div class="sb-lock"><span class="prolock-ico" aria-hidden="true"><${Icon} name="lock" size=${18} /></span><b>Segments are a Pro feature</b>
         <p class="muted small">Save any set of filters, like “visitors from Germany on mobile”, and switch between them in one click.</p>
-        ${site.can_manage && html`<${Link} to=${billingPath()} class="btn primary sm" onClick=${close}>Upgrade to unlock<//>`}</div>`
+        ${site.can_manage && html`<${UpgradeLink} to=${billingPath()} class="btn primary sm" onClick=${close}>Upgrade to unlock<//>`}</div>`
       : html`<div style="min-width:240px">
         <button class=${'item ' + (!active ? 'on' : '')} onClick=${() => choose(null, close)}><span>All visitors</span>${!active && html`<${Icon} name="check" size=${14} class="check" />`}</button>
         ${segs && segs.list.length > 0 && html`<div class="grp">Saved segments</div>${segs.list.map((x) => html`<button class=${'item ' + (active && active[2][0] === x.id ? 'on' : '')} onClick=${() => choose(x.id, close)}><span class="trunc">${x.name}</span>${active && active[2][0] === x.id ? html`<${Icon} name="check" size=${14} class="check" />` : x.type === 'site' ? html`<span class="muted small">Shared</span>` : null}</button>`)}`}

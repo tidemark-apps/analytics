@@ -4,6 +4,9 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+### Added
+- `TIDEMARK_UPGRADE_URL`: a host that sells plans can point the "Upgrade" links on locked features at its own page. They open in a new tab. Left empty, they stay inside the app as before.
+
 ## [0.38.4] - 2026-11-09
 
 ### Added
