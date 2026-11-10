@@ -80,6 +80,12 @@ return [
     // A JSON file that sets this install's plan (limits, paused or not, which features are on); see App\Support\PlanFile. Unset means no limits.
     'plan_file' => env('TIDEMARK_PLAN_FILE'),
 
+    // The public key (base64, Ed25519) of the service that hosts this install. It lets that service send customers straight in from its
+    // portal and open support sessions; see App\Support\HostToken. Unset turns both off.
+    'sso_public_key' => env('TIDEMARK_SSO_PUBLIC_KEY'),
+    // Whether the host's support may open read-only sessions on this install (the owner sees each one in Settings → Security).
+    'support_access' => (bool) env('TIDEMARK_SUPPORT_ACCESS', true),
+
     // Organizations, teams and moving sites between them. Turn off for an install that serves one customer: everyone keeps their
     // Personal organization behind the scenes and sites are shared with people one by one.
     'organizations' => (bool) env('TIDEMARK_ORGANIZATIONS', true),
